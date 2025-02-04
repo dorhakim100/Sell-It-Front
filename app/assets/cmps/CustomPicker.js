@@ -75,11 +75,14 @@ export default function CustomPicker({
           <Button title='Close' onPress={() => setIsModal(false)} />
           <FlatList
             data={items}
+            contentContainerStyle={styles.list}
+            numColumns={2}
             keyExtractor={(item) => item.value.toString()}
             renderItem={({ item }) => (
               <PickerItem
                 label={item.label}
                 icon={item.icon}
+                color={item.color}
                 onPress={() => {
                   item.onPress(item.label.toLowerCase())
 
@@ -105,6 +108,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+
     marginHorizontal: 10,
 
     backgroundColor: defaultStyles.colors.strongWhite,
@@ -114,6 +118,11 @@ const styles = StyleSheet.create({
   textContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+  },
+
+  list: {
+    alignItems: 'center',
+    gap: 10,
   },
 
   icon: {

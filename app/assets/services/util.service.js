@@ -59,6 +59,15 @@ export function getRandomIntInclusive(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min //The maximum is inclusive and the minimum is inclusive
 }
 
+export function capitalizeWords(str) {
+  return str
+    .split(' ') // Split the string into words
+    .map(
+      (word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase() // Capitalize the first letter of each word
+    )
+    .join(' ') // Join the words back into a single string
+}
+
 export function getRandomHexColor() {
   const randomChannel = () =>
     Math.floor(100 + Math.random() * 155)

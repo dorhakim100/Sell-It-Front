@@ -27,6 +27,7 @@ export default function CustomText({
     position,
     top,
     fontFamily,
+    flexWrap,
   } = style
 
   return (
@@ -48,6 +49,7 @@ export default function CustomText({
         position,
         top,
         fontFamily,
+        flexWrap,
       }}
     >
       {children}
