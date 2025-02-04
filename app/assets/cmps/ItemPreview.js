@@ -37,22 +37,22 @@ function ItemPreview({ item, setItem, renderRightAction, onSwipeableOpen }) {
         style={styles.preview}
       >
         <View style={styles.container}>
-          <Text style={styles.num}>{getFormattedNum(item.num)}</Text>
+          {/* <Text style={styles.num}>{getFormattedNum(item.num)}</Text> */}
 
-          <Image uri={item.sprites.pixel} style={styles.sprite}></Image>
+          <Image uri={item.images[0]} style={styles.image}></Image>
 
           <Text style={styles.name} numberOfLines={1}>
-            {item.name}
+            {item.label}
+            {/* <MaterialCommunityIcons
+              name={'chevron-right'}
+              size={20}
+              color={defaultStyles.colors.darkGray}
+            /> */}
           </Text>
 
-          <View style={styles.types}>
+          {/* <View style={styles.types}>
             <Types types={item.types} isSprite={true} />
-          </View>
-          <MaterialCommunityIcons
-            name={'chevron-right'}
-            size={20}
-            color={defaultStyles.colors.darkGray}
-          />
+          </View> */}
         </View>
       </TouchableOpacity>
     </Swipeable>
@@ -61,7 +61,7 @@ function ItemPreview({ item, setItem, renderRightAction, onSwipeableOpen }) {
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'row',
+    // flexDirection: 'row',
     // justifyContent: 'space-around',
     justifyContent: 'space-between',
     paddingBottom: 15,
@@ -70,7 +70,11 @@ const styles = StyleSheet.create({
     shadowColor: 'gray',
     shadowOffset: { width: 1, heigh: 10 },
     shadowOpacity: 0.5,
-    backgroundColor: defaultStyles.colors.whiteBackground,
+    backgroundColor: defaultStyles.colors.lightGray,
+    width: '90%',
+    alignSelf: 'center',
+    borderRadius: 8,
+    marginVertical: 10,
   },
 
   preview: {},
@@ -78,19 +82,24 @@ const styles = StyleSheet.create({
   num: {
     ...defaultStyles.text,
     fontSize: 15,
-    width: 50,
+    // width: 50,
   },
 
   name: {
     ...defaultStyles.text,
+
+    textAlign: 'center',
+
     fontWeight: 'bold',
     fontWeight: '600',
     width: 120,
   },
 
-  sprite: {
-    height: 30,
-    width: 30,
+  image: {
+    margin: 10,
+    height: 150,
+    width: 280,
+    borderRadius: 5,
   },
 
   types: {

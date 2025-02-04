@@ -44,7 +44,6 @@ export const itemService = {
 function getDefaultFilter() {
   return {
     txt: '',
-    category: 'all',
-    types: [],
+    categories: [],
   }
 }

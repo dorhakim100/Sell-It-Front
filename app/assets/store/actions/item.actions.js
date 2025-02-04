@@ -28,7 +28,7 @@ export async function loadItems(filterBy) {
     // store.dispatch({ type: SET_ITEM_FILTER, filter: filterBy })
     return items
   } catch (err) {
-    // console.log('Cannot load items', err)
+    console.log('Cannot load items', err)
     throw err
   }
 }

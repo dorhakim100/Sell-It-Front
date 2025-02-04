@@ -1,8 +1,8 @@
 import { create } from 'apisauce'
 import cache from '../utility/cache'
 
-const MY_IP = '192.168.1.237' // home
-// const MY_IP = '192.168.200.178' // work
+// const MY_IP = '192.168.1.237' // home
+const MY_IP = '192.168.200.178' // work
 const BACKEND_PORT = 3030
 
 const apiClient = create({

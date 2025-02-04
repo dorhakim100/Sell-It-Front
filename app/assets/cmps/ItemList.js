@@ -47,7 +47,7 @@ function ItemList({ items, setItem, isRefreshing, onSwipePress, swipeable }) {
         />
       )}
       contentContainerStyle={styles.listContainer}
-      ItemSeparatorComponent={<ListItemSeparator color={colors.secondLight} />}
+      // ItemSeparatorComponent={<ListItemSeparator color={colors.secondLight} />}
     />
   )
 }

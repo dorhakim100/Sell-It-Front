@@ -11,6 +11,7 @@ import {
 import MaterialIcons from '@expo/vector-icons/MaterialIcons'
 import FontAwesome from '@expo/vector-icons/FontAwesome'
 import CustomButton from './CustomButton'
+import AntDesign from '@expo/vector-icons/AntDesign'
 
 import colors from '../config/color'
 import defaultStyles from '../config/styles'
@@ -39,9 +40,7 @@ const SearchInput = ({ icon, onSubmit, ...otherProps }) => {
           color={defaultStyles.colors.darkGray}
           style={styles.icon}
         />
-      )) || (
-        <MaterialIcons name='catching-item' size={30} color={colors.primary} />
-      )}
+      )) || <AntDesign name='search1' size={30} color={colors.primary} />}
 
       <TextInput
         // keyboardType='numeric' // for number keypad

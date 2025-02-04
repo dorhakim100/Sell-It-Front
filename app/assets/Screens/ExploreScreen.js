@@ -33,7 +33,7 @@ import CustomPicker from '../cmps/CustomPicker'
 import MaterialIcons from '@expo/vector-icons/MaterialIcons'
 
 import { capitalizeFirstLetter, makeId } from '../services/utils'
-import { itemService } from '../services/item/item.service'
+import { itemService } from '../api/item'
 import {
   addItem,
   loadItem,
@@ -62,6 +62,7 @@ function ExploreScreen({ navigation }) {
   const [error, setError] = useState(false)
 
   const [filter, setFilter] = useState(itemService.getDefaultFilter())
+  console.log(filter)
 
   const [isRefreshing, setIsRefreshing] = useState(false)
 
@@ -340,8 +341,10 @@ function ExploreScreen({ navigation }) {
   ]
 
   const setItems = async (filter) => {
+    setIsLoading(true)
     const res = await loadItems(filter)
-
+    setIsLoading(false)
+    console.log(res.data)
     if (res.problem) {
       setError(true)
       return
@@ -358,11 +361,7 @@ function ExploreScreen({ navigation }) {
   }
 
   useEffect(() => {
-    setIsLoading(true)
     setItems(filter)
-    setTimeout(() => {
-      setIsLoading(false)
-    }, 500)
   }, [filter])
 
   const handleSearchSubmit = (query) => {
@@ -400,7 +399,7 @@ function ExploreScreen({ navigation }) {
         <CustomPicker
           placeholder={'Category'}
           value={
-            filter.category !== 'all'
+            filter.categories.length > 0
               ? capitalizeWords(filter.category)
               : 'Category'
           }
@@ -409,11 +408,11 @@ function ExploreScreen({ navigation }) {
           onPress={onItemPickerPress}
         />
         <SearchInput onSubmit={handleSearchSubmit} />
-        <View style={styles.buttonContainer}>
+        {/* <View style={styles.buttonContainer}>
           <CustomButton style={styles.addButton} handlePress={navigateToAdd}>
             Add
           </CustomButton>
-        </View>
+        </View> */}
         {(isLoading && (
           <CustomLottieAnimation animation={loader} visible={isLoading} />
         )) || (
