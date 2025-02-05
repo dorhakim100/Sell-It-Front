@@ -19,6 +19,7 @@ import { StyleSheet } from 'react-native'
 import CustomButton from '../cmps/CustomButton'
 import ItemContainer from '../cmps/ItemContainer'
 import Screen from './Screen'
+import ProfileBanner from '../cmps/ProfileBanner'
 
 const screenWidth = Dimensions.width
 
@@ -39,7 +40,7 @@ function DetailsScreen() {
 
   return (
     <Screen>
-      <View style={styles.prevNextButtons}>
+      {/* <View style={styles.prevNextButtons}>
         <CustomButton
           handlePress={async () => await navItem(index - 1)}
           disabled={index === 0}
@@ -52,12 +53,13 @@ function DetailsScreen() {
         >
           Next
         </CustomButton>
-      </View>
+      </View> */}
 
       <ItemContainer currItem={currItem} />
       <View style={styles.textContainer}>
-        <Text style={styles.text}>{currItem.entry}</Text>
+        <Text style={styles.text}>{currItem.description}</Text>
       </View>
+      <ProfileBanner user={currItem.userDetails} />
     </Screen>
   )
 }
@@ -71,7 +73,10 @@ const styles = StyleSheet.create({
     width: screenWidth,
   },
 
-  textContainer: {},
+  textContainer: {
+    alignSelf: 'center',
+    width: '90%',
+  },
   text: {
     fontSize: 20,
     textAlign: 'justify',

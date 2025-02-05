@@ -28,7 +28,10 @@ export function itemReducer(state = initialState, action) {
 
       break
     case SET_ITEM:
-      newState = { ...state, currItem: action.currItem }
+      const item = state.items.find(
+        (itemToFind) => itemToFind._id === action.idToSet
+      )
+      newState = { ...state, currItem: item }
       break
     case REMOVE_ITEM:
       const lastRemovedItem = state.myItems.find(

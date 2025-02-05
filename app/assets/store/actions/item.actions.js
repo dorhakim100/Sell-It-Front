@@ -57,17 +57,11 @@ export async function getPageItems(filterBy) {
 }
 
 export async function loadItem(itemId) {
-  const res = await itemService.query(itemService.getDefaultFilter())
-  if (!res.ok) throw res
-  const items = res.data
-
-  const item = items.find((mon) => mon._id === itemId)
   try {
     store.dispatch({
       type: SET_ITEM,
-      currItem: item,
+      idToSet: itemId,
     })
-    return item
   } catch (err) {
     // console.log('Cannot load item', err)
     throw err

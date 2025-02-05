@@ -15,11 +15,15 @@ import { Image } from 'react-native-expo-image-cache'
 import Types from './Types'
 
 import { capitalizeFirstLetter, getFormattedNum } from '../services/utils'
+import { capitalizeWords } from '../services/util.service'
 import { LinearGradient } from 'react-native-svg'
 import colors from '../config/color'
 import CustomText from './CustomText'
+import CustomCarousel from './CustomCarousel'
+import ProfileBanner from './ProfileBanner'
 
 const screenWidth = Dimensions.get('window').width
+const imageWidth = screenWidth * 0.8
 
 const ItemContainer = ({ currItem, onPress }) => {
   const [isHome, setIsHome] = useState(false)
@@ -27,23 +31,14 @@ const ItemContainer = ({ currItem, onPress }) => {
   return (
     <TouchableWithoutFeedback onPress={onPress}>
       <View style={styles.container}>
-        <View style={styles.switchContainer}>
-          <TouchableOpacity onPress={() => setIsHome(!isHome)}>
-            <CustomText>Home Sprite</CustomText>
-          </TouchableOpacity>
-          <Switch value={isHome} onValueChange={(value) => setIsHome(value)} />
-        </View>
-        <Image
-          uri={isHome ? currItem.sprites.home : currItem.sprites.artwork}
-          style={styles.spriteImg}
-        ></Image>
+        <CustomCarousel images={currItem.images} />
+
         <View style={styles.nameContainer}>
-          <Text style={styles.name}>
-            {capitalizeFirstLetter(currItem.name)}
-          </Text>
-          <Text style={styles.num}>{getFormattedNum(currItem.num)}</Text>
+          <Text style={styles.label}>{capitalizeWords(currItem.label)}</Text>
+          <Text style={styles.num}>{`${currItem.price}$`}</Text>
         </View>
-        <Types types={currItem.types} />
+
+        {/* <Types types={currItem.types} /> */}
       </View>
     </TouchableWithoutFeedback>
   )
@@ -83,7 +78,7 @@ const styles = StyleSheet.create({
 
   spriteImg: {
     width: screenWidth * 0.8,
-    height: screenWidth * 0.8,
+    // height: screenWidth * 0.8,
   },
 
   name: {
