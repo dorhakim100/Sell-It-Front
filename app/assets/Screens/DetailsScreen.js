@@ -22,6 +22,7 @@ import Screen from './Screen'
 import ProfileBanner from '../cmps/ProfileBanner'
 import CustomMap from '../cmps/CustomMap'
 import { convertCorsToNumber } from '../services/util.service'
+import { ScrollView } from 'react-native-gesture-handler'
 
 const screenWidth = Dimensions.width
 
@@ -50,7 +51,8 @@ function DetailsScreen() {
 
   return (
     <Screen>
-      {/* <View style={styles.prevNextButtons}>
+      <ScrollView>
+        {/* <View style={styles.prevNextButtons}>
         <CustomButton
           handlePress={async () => await navItem(index - 1)}
           disabled={index === 0}
@@ -64,13 +66,13 @@ function DetailsScreen() {
           Next
         </CustomButton>
       </View> */}
-
-      <ItemContainer currItem={currItem} />
-      <View style={styles.textContainer}>
-        <Text style={styles.text}>{currItem.description}</Text>
-      </View>
-      <ProfileBanner user={currItem.userDetails} />
-      <CustomMap cords={cords} isFixed={true} />
+        <ItemContainer currItem={currItem} />
+        <View style={styles.textContainer}>
+          <Text style={styles.text}>{currItem.description}</Text>
+        </View>
+        <ProfileBanner user={currItem.userDetails} />
+        <CustomMap cords={cords} isFixed={true} />{' '}
+      </ScrollView>
     </Screen>
   )
 }

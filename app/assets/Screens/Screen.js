@@ -9,7 +9,6 @@ import {
 import CustomConnectionMessage from '../cmps/CustomConnectionMessage'
 
 import defaultStyles from '../config/styles'
-import { ScrollView } from 'react-native-gesture-handler'
 
 function Screen({ children, hasNavigationBar }) {
   return (
@@ -17,7 +16,7 @@ function Screen({ children, hasNavigationBar }) {
       <SafeAreaView style={styles.screen}>
         <>
           <CustomConnectionMessage hasNavigationBar={hasNavigationBar} />
-          <ScrollView>{children}</ScrollView>
+          {children}
         </>
       </SafeAreaView>
     </TouchableWithoutFeedback>
