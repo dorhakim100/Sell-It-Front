@@ -36,6 +36,7 @@ import { capitalizeFirstLetter, makeId } from '../services/utils'
 import { itemService } from '../api/item'
 import {
   addItem,
+  getPageItems,
   loadItem,
   loadItems,
   removeItem,
@@ -62,7 +63,7 @@ function ExploreScreen({ navigation }) {
   const [error, setError] = useState(false)
 
   const [filter, setFilter] = useState(itemService.getDefaultFilter())
-  console.log(filter)
+  const [maxPage, setMaxPage] = useState()
 
   const [isRefreshing, setIsRefreshing] = useState(false)
 
@@ -343,6 +344,8 @@ function ExploreScreen({ navigation }) {
   const setItems = async (filter) => {
     setIsLoading(true)
     const res = await loadItems(filter)
+    const maxPageRes = await itemService.getMaxPage(filter)
+    setMaxPage(maxPageRes.data)
     setIsLoading(false)
     console.log(res.data)
     if (res.problem) {
@@ -368,6 +371,12 @@ function ExploreScreen({ navigation }) {
     const filterBy = { ...filter, txt: query }
     setFilter(filterBy)
   }
+
+  const getPageIdxItems = async (pageToSet) => {
+    const filterBy = { ...filter, pageIdx: pageToSet }
+    return await getPageItems(filterBy)
+  }
+
   const [keyboardOffset, setKeyboardOffset] = useState(0)
 
   const setItem = async (itemId) => {
@@ -422,6 +431,8 @@ function ExploreScreen({ navigation }) {
             isRefreshing={isRefreshing}
             onSwipePress={handleAdd}
             swipeable={swipeable}
+            getPageIdxItems={getPageIdxItems}
+            maxPage={maxPage}
           />
         )}
       </KeyboardAvoidingView>

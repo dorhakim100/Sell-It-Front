@@ -13,14 +13,31 @@ import { itemService } from '../services/item/item.service'
 import colors from '../config/color'
 import { useSelector } from 'react-redux'
 
-function ItemList({ items, setItem, isRefreshing, onSwipePress, swipeable }) {
+function ItemList({
+  items,
+  setItem,
+  isRefreshing,
+  onSwipePress,
+  swipeable,
+  getPageIdxItems,
+  maxPage,
+}) {
   const swipeableRef = useRef(null)
+
+  const filter = useSelector((stateSelector) => stateSelector.itemModule.filter)
 
   const handleSwipeableOpen = (currentRef) => {
     if (swipeableRef.current) {
       swipeableRef.current.close() // Close the previously open Swipeable if exists
     }
     swipeableRef.current = currentRef.current // Set the new Swipeable as the current one
+  }
+
+  const loadMoreData = async () => {
+    const pageToSet = filter.pageIdx + 1
+    if (pageToSet === maxPage) return
+
+    const newItems = await getPageIdxItems(pageToSet)
   }
 
   return (
@@ -31,6 +48,8 @@ function ItemList({ items, setItem, isRefreshing, onSwipePress, swipeable }) {
       onRefresh={() => {
         loadItems(itemService.getDefaultFilter())
       }}
+      onEndReached={loadMoreData} // Trigger load more data when end is reached
+      // onEndReachedThreshold={0.5} // Threshold for when to trigger loadMoreData (0 to 1, where 1 is the very end)
       renderItem={({ item }) => (
         <ItemPreview
           onSwipeableOpen={(ref) => handleSwipeableOpen(ref)}

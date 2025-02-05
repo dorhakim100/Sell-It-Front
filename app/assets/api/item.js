@@ -39,11 +39,20 @@ export const itemService = {
   query,
   getDefaultFilter,
   post,
+  getMaxPage,
 }
 
 function getDefaultFilter() {
   return {
     txt: '',
     categories: [],
+    pageIdx: 0,
   }
+}
+
+async function getMaxPage(filter) {
+  const res = client.get(`${endpoint}/maxPage`, filter)
+  if (!res.ok) return res
+
+  return res.data
 }

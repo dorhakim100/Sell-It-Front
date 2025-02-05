@@ -7,13 +7,14 @@ import {
   ADD_ITEM,
   ADD_NEW_ITEM,
   SET_FILTER,
+  SET_NEW_ITEMS,
 } from '../reducers/item.reducer'
 import { makeId } from '../../services/util.service'
 
 export async function loadItems(filterBy) {
   try {
     const res = await itemService.query(filterBy)
-
+    console.log(res)
     if (!res.ok) throw res
 
     const items = res.data
@@ -26,6 +27,28 @@ export async function loadItems(filterBy) {
       items,
     })
     // store.dispatch({ type: SET_ITEM_FILTER, filter: filterBy })
+    return items
+  } catch (err) {
+    console.log('Cannot load items', err)
+    throw err
+  }
+}
+export async function getPageItems(filterBy) {
+  try {
+    const res = await itemService.query(filterBy)
+
+    if (!res.ok) throw res
+
+    const items = res.data
+    store.dispatch({
+      type: SET_FILTER,
+      filterToSet: filterBy,
+    })
+    store.dispatch({
+      type: SET_NEW_ITEMS,
+      newItems: items,
+    })
+
     return items
   } catch (err) {
     console.log('Cannot load items', err)
