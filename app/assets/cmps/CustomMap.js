@@ -6,7 +6,8 @@ import MapView, { Marker } from 'react-native-maps'
 
 import defaultStyles from '../config/styles'
 
-export default function CustomMap({ cords = {}, isFixed }) {
+export default function CustomMap({ cords, isFixed }) {
+  console.log(cords)
   let location
   if (!isFixed) {
     location = useLocation()
@@ -19,13 +20,13 @@ export default function CustomMap({ cords = {}, isFixed }) {
       <MapView
         style={styles.map}
         // provider='google' // Use Google Maps
-        initialRegion={{
-          latitude: 37.7749, // Default latitude (San Francisco)
-          longitude: -122.4194, // Default longitude (San Francisco)
-          latitudeDelta: 0.05,
-          longitudeDelta: 0.05,
-        }}
-        category={location}
+        // initialRegion={{
+        //   latitude: 37.7749, // Default latitude (San Francisco)
+        //   longitude: -122.4194, // Default longitude (San Francisco)
+        //   latitudeDelta: 0.05,
+        //   longitudeDelta: 0.05,
+        // }}
+        region={location}
         showsUserLocation
       >
         {location && <Marker coordinate={location} title='You are here' />}

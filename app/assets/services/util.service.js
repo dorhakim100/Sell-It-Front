@@ -93,6 +93,12 @@ export function getRandomDarkHexColor() {
   return isContrastSufficient(color) ? color : getRandomHexColor()
 }
 
+export function convertCorsToNumber(str) {
+  const number = parseFloat(str)
+
+  return number
+}
+
 export function randomPastTime() {
   const HOUR = 1000 * 60 * 60
   const DAY = 1000 * 60 * 60 * 24

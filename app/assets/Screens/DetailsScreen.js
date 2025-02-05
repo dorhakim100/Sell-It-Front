@@ -20,6 +20,8 @@ import CustomButton from '../cmps/CustomButton'
 import ItemContainer from '../cmps/ItemContainer'
 import Screen from './Screen'
 import ProfileBanner from '../cmps/ProfileBanner'
+import CustomMap from '../cmps/CustomMap'
+import { convertCorsToNumber } from '../services/util.service'
 
 const screenWidth = Dimensions.width
 
@@ -31,11 +33,19 @@ function DetailsScreen() {
 
   const [index, setIndex] = useState()
 
+  const [cords, setCords] = useState()
+
   useEffect(() => {
-    console.log(currItem)
     const idx = items.findIndex((item) => item._id === currItem._id)
-    console.log(idx)
     setIndex(idx)
+
+    setCords({
+      ...currItem.location, // Spread the existing location if necessary
+      latitude: parseFloat(currItem.location.latitude),
+      longitude: parseFloat(currItem.location.longitude),
+      latitudeDelta: 0.05,
+      longitudeDelta: 0.05,
+    })
   }, [currItem])
 
   return (
@@ -60,6 +70,7 @@ function DetailsScreen() {
         <Text style={styles.text}>{currItem.description}</Text>
       </View>
       <ProfileBanner user={currItem.userDetails} />
+      <CustomMap cords={cords} isFixed={true} />
     </Screen>
   )
 }
