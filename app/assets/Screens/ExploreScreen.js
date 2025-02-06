@@ -342,15 +342,21 @@ function ExploreScreen({ navigation }) {
   ]
 
   const setItems = async (filter) => {
-    setIsLoading(true)
-    const res = await loadItems(filter)
-    const maxPageRes = await itemService.getMaxPage(filter)
-    setMaxPage(maxPageRes.data)
-    setIsLoading(false)
-    console.log(res.data)
-    if (res.problem) {
-      setError(true)
-      return
+    try {
+      setIsLoading(true)
+      console.log(filter)
+      const res = await loadItems(filter)
+      console.log(res)
+      const maxPageRes = await itemService.getMaxPage(filter)
+      setMaxPage(maxPageRes.data)
+      setIsLoading(false)
+      console.log(res.data)
+      if (res.problem) {
+        setError(true)
+        return
+      }
+    } catch (err) {
+      console.log(err)
     }
   }
 

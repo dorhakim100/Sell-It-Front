@@ -13,6 +13,7 @@ import { makeId } from '../../services/util.service'
 
 export async function loadItems(filterBy) {
   try {
+    console.log(filterBy)
     const res = await itemService.query(filterBy)
     console.log(res)
     if (!res.ok) throw res

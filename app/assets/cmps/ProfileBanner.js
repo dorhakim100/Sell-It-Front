@@ -5,16 +5,19 @@ import MaterialIcons from '@expo/vector-icons/MaterialIcons'
 import colors from '../config/color'
 
 import CustomText from './CustomText'
+import { Image } from 'react-native-expo-image-cache'
 
 function ProfileBanner({ user }) {
-  console.log(user)
   const profile = {
     name: user.fullname,
     email: user.email,
+    image: user.image,
   }
   return (
     <View style={styles.container}>
-      <MaterialIcons name='account-circle' size={60} color={'tomato'} />
+      {(profile.image && <Image uri={profile.image} />) || (
+        <MaterialIcons name='account-circle' size={60} color={'tomato'} />
+      )}
       <View style={styles.nameContainer}>
         <CustomText style={styles.name}>{profile.name}</CustomText>
         <CustomText style={styles.email}>{profile.email}</CustomText>

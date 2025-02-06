@@ -17,6 +17,7 @@ import paths from '../navigation/routes'
 import { useSelector } from 'react-redux'
 import CustomButton from '../cmps/CustomButton'
 import { logout } from '../store/actions/user.actions'
+import { ScrollView } from 'react-native'
 
 export default function AccountScreen({ navigation }) {
   const profile = {
@@ -35,6 +36,7 @@ export default function AccountScreen({ navigation }) {
     {
       text: 'My Messages',
       icon: <MessageIcon />,
+      onPress: navigateToMyMessages,
     },
   ]
 
@@ -47,6 +49,9 @@ export default function AccountScreen({ navigation }) {
   function navigateToMySignup() {
     navigation.navigate(paths.SIGNUP)
   }
+  function navigateToMyMessages() {
+    navigation.replace(paths.MAIN, { screen: paths.MESSAGES })
+  }
 
   async function handleLogout() {
     console.log('logging out')
@@ -56,41 +61,45 @@ export default function AccountScreen({ navigation }) {
 
   return (
     <Screen>
-      {(user && (
-        <>
-          <ProfileBanner user={user} />
-          <View style={styles.listsContainer}>
-            {list.map((item, index) => (
-              <React.Fragment key={index}>
-                <CustomListSection icon={item.icon} onPress={item.onPress}>
-                  {item.text}
-                </CustomListSection>
-                {index < list.length - 1 && <ListItemSeparator />}
-              </React.Fragment>
-            ))}
+      <ScrollView>
+        {(user && (
+          <>
+            <ProfileBanner user={user} />
+            <View style={styles.listsContainer}>
+              {list.map((item, index) => (
+                <React.Fragment key={index}>
+                  <CustomListSection icon={item.icon} onPress={item.onPress}>
+                    {item.text}
+                  </CustomListSection>
+                  {index < list.length - 1 && <ListItemSeparator />}
+                </React.Fragment>
+              ))}
+            </View>
+            <CustomListSection icon={<LogoutIcon />} onPress={handleLogout}>
+              Log Out
+            </CustomListSection>
+          </>
+        )) || (
+          <View style={styles.loginButtonContainer}>
+            <CustomButton handlePress={navigateToMyLogin}>Login</CustomButton>
+            <CustomButton
+              handlePress={navigateToMySignup}
+              secondaryColor={true}
+            >
+              Signup
+            </CustomButton>
           </View>
-          <CustomListSection icon={<LogoutIcon />} onPress={handleLogout}>
-            Log Out
-          </CustomListSection>
-        </>
-      )) || (
-        <View style={styles.loginButtonContainer}>
-          <CustomButton handlePress={navigateToMyLogin}>Login</CustomButton>
-          <CustomButton handlePress={navigateToMySignup} secondaryColor={true}>
-            Signup
-          </CustomButton>
-        </View>
-      )}
-
-      <CustomMap
-        cords={{
-          latitude: 32.1845,
-          longitude: 34.8706,
-          latitudeDelta: 0.05,
-          longitudeDelta: 0.05,
-        }}
-        isFixed={true}
-      />
+        )}
+        <CustomMap
+          cords={{
+            latitude: 32.1845,
+            longitude: 34.8706,
+            latitudeDelta: 0.05,
+            longitudeDelta: 0.05,
+          }}
+          isFixed={true}
+        />{' '}
+      </ScrollView>
     </Screen>
   )
 }

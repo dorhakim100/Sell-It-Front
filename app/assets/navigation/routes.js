@@ -8,4 +8,5 @@ export default Object.freeze({
   DETAILS: 'Details',
   ADD: 'Add',
   LIST: 'List',
+  MESSAGES: 'Messages',
 })

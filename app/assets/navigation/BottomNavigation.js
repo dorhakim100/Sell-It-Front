@@ -33,6 +33,7 @@ import NewListingButton from './NewListingButton'
 import paths from './routes'
 import { userService } from '../api/user/user'
 import { setRemembered } from '../store/actions/user.actions'
+import MessagesScreen from '../Screens/MessagesScreen'
 
 const Tab = createBottomTabNavigator()
 const Stack = createStackNavigator()
@@ -138,10 +139,10 @@ function CustomBottomNavigation() {
         }}
       /> */}
       <Tab.Screen
-        name={paths.DETAILS}
-        component={DetailsScreen}
+        name={paths.MESSAGES}
+        component={MessagesScreen}
         options={{
-          tabBarLabel: paths.DETAILS,
+          tabBarLabel: paths.MESSAGES,
           tabBarButton: (props) => <NewListingButton {...props} />,
           tabBarIcon: ({ focused, color, size }) => {
             return (
@@ -243,6 +244,11 @@ export default function AppNavigator() {
         name={paths.MAIN}
         component={CustomBottomNavigation}
         options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name={paths.DETAILS}
+        component={DetailsScreen}
+        options={{ headerShown: true }}
       />
       <Stack.Screen name={paths.ADD} component={AddScreen} />
       <Stack.Screen name={paths.LIST} component={MyList} />

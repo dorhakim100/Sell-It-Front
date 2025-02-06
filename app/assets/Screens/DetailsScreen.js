@@ -23,6 +23,7 @@ import ProfileBanner from '../cmps/ProfileBanner'
 import CustomMap from '../cmps/CustomMap'
 import { convertCorsToNumber } from '../services/util.service'
 import { ScrollView } from 'react-native-gesture-handler'
+import CustomText from '../cmps/CustomText'
 
 const screenWidth = Dimensions.width
 
@@ -68,10 +69,10 @@ function DetailsScreen() {
       </View> */}
         <ItemContainer currItem={currItem} />
         <View style={styles.textContainer}>
-          <Text style={styles.text}>{currItem.description}</Text>
+          <CustomText style={styles.text}>{currItem.description}</CustomText>
         </View>
         <ProfileBanner user={currItem.userDetails} />
-        <CustomMap cords={cords} isFixed={true} />{' '}
+        <CustomMap cords={cords} isFixed={true} />
       </ScrollView>
     </Screen>
   )
@@ -88,9 +89,10 @@ const styles = StyleSheet.create({
 
   textContainer: {
     alignSelf: 'center',
-    width: '90%',
+    // width: '90%',
   },
   text: {
+    padding: 20,
     fontSize: 20,
     textAlign: 'justify',
   },

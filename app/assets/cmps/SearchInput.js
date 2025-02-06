@@ -51,6 +51,7 @@ const SearchInput = ({ icon, onSubmit, ...otherProps }) => {
         onChangeText={handleChange}
         placeholder={`Search here...`}
         returnKeyType='search'
+        autoCorrect={false}
         onSubmitEditing={handleSearch}
         {...otherProps} // passing props all props from parent at once
       />
