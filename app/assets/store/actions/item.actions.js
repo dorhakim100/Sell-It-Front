@@ -41,6 +41,8 @@ export async function getPageItems(filterBy) {
     if (!res.ok) throw res
 
     const items = res.data
+    console.log(items)
+    // return
     store.dispatch({
       type: SET_FILTER,
       filterToSet: filterBy,
@@ -112,7 +114,13 @@ export async function navItem(itemIndex) {
 
 export async function addNewItem(itemToAdd, onProgress) {
   try {
+    // console.log(itemToAdd)
+    // return
     const res = await itemService.post(itemToAdd, onProgress)
+    if (!res.ok) {
+      console.log(res)
+      return res
+    }
     const savedItem = res.data
     store.dispatch({
       type: ADD_NEW_ITEM,

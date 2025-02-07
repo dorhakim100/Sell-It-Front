@@ -31,32 +31,24 @@ export default function AccountScreen({ navigation }) {
     {
       text: 'My Items',
       icon: <ListIcon />,
-      onPress: navigateToMyList,
+      onPress: () => navigateToScreen(paths.LIST),
     },
     {
       text: 'My Messages',
       icon: <MessageIcon />,
-      onPress: navigateToMyMessages,
+      onPress: () => replaceToScreen(paths.MAIN, paths.MESSAGES),
     },
   ]
 
-  function navigateToMyList() {
-    navigation.navigate(paths.LIST)
+  function navigateToScreen(path) {
+    navigation.navigate(path)
   }
-  function navigateToMyLogin() {
-    navigation.navigate(paths.LOGIN)
-  }
-  function navigateToMySignup() {
-    navigation.navigate(paths.SIGNUP)
-  }
-  function navigateToMyMessages() {
-    navigation.replace(paths.MAIN, { screen: paths.MESSAGES })
+  function replaceToScreen(path, screen) {
+    navigation.replace(path, { screen })
   }
 
   async function handleLogout() {
-    console.log('logging out')
     await logout()
-    console.log(user)
   }
 
   return (
@@ -65,6 +57,11 @@ export default function AccountScreen({ navigation }) {
         {(user && (
           <>
             <ProfileBanner user={user} />
+            <View style={styles.buttonContainer}>
+              <CustomButton onPress={() => navigateToScreen(paths.ADD)}>
+                Post
+              </CustomButton>
+            </View>
             <View style={styles.listsContainer}>
               {list.map((item, index) => (
                 <React.Fragment key={index}>
@@ -81,9 +78,11 @@ export default function AccountScreen({ navigation }) {
           </>
         )) || (
           <View style={styles.loginButtonContainer}>
-            <CustomButton handlePress={navigateToMyLogin}>Login</CustomButton>
+            <CustomButton onPress={() => navigateToScreen(paths.LOGIN)}>
+              Login
+            </CustomButton>
             <CustomButton
-              handlePress={navigateToMySignup}
+              onPress={() => navigateToScreen(paths.SIGNUP)}
               secondaryColor={true}
             >
               Signup
@@ -98,7 +97,7 @@ export default function AccountScreen({ navigation }) {
             longitudeDelta: 0.05,
           }}
           isFixed={true}
-        />{' '}
+        />
       </ScrollView>
     </Screen>
   )
@@ -134,6 +133,13 @@ const LogoutIcon = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+
+  buttonContainer: {
+    // alignItems: 'center',
+    alignSelf: 'center',
+    width: 150,
+    marginBottom: 25,
   },
 
   loginButtonContainer: {

@@ -15,6 +15,7 @@ export default function UploadScreen({
   visible = false,
   navigate,
 }) {
+  console.log(progress)
   return (
     <Modal visible={visible}>
       <View style={styles.container}>
@@ -31,7 +32,7 @@ export default function UploadScreen({
               loop={false}
             />
             <View style={styles.buttonContainer}>
-              <CustomButton handlePress={navigate}>Back</CustomButton>
+              <CustomButton onPress={navigate}>Back</CustomButton>
             </View>
           </>
         )}

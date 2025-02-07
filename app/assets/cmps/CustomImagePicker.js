@@ -15,6 +15,7 @@ import * as ImagePicker from 'expo-image-picker'
 import defaultStyles from '../config/styles'
 import CustomButton from './CustomButton'
 import { makeId } from '../services/utils'
+import { uploadService } from '../services/upload.service'
 
 export default function CustomImagePicker({ input }) {
   const [imagesUri, setImagesUri] = useState([])
@@ -37,19 +38,19 @@ export default function CustomImagePicker({ input }) {
 
   const selectImage = async () => {
     try {
-      const res = await ImagePicker.launchImageLibraryAsync()
-      if (!res.canceled) {
-        const img = res.assets[0].uri
-        let newImages
-        if (!imagesUri[0]) {
-          newImages = [{ uri: img, id: makeId() }]
-        } else {
-          newImages = [...imagesUri, { uri: img, id: makeId() }]
-        }
-        console.log(newImages)
-        setImagesUri(newImages)
-        input.onSetImage(newImages)
+      // const res = await ImagePicker.launchImageLibraryAsync()
+      const res = await uploadService.uploadImg()
+
+      const uri = res
+      let newImages
+      if (!imagesUri[0]) {
+        newImages = [{ uri, id: makeId() }]
+      } else {
+        newImages = [...imagesUri, { uri, id: makeId() }]
       }
+
+      setImagesUri(newImages)
+      input.onSetImage(newImages)
     } catch (err) {
       console.log(err)
     }
@@ -99,7 +100,7 @@ export default function CustomImagePicker({ input }) {
           <Image source={require('../imgs/camera.jpg')} style={styles.img} />
         )}
       </ScrollView>
-      <CustomButton handlePress={selectImage}>Upload</CustomButton>
+      <CustomButton onPress={selectImage}>Upload</CustomButton>
     </View>
   )
 }

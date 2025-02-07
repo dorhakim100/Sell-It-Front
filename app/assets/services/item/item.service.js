@@ -81,20 +81,11 @@ async function save(item) {
 function getEmptyItem() {
   return {
     _id: '679b7b4f1d197b22a0ae6f00',
-    num: 1,
-    name: 'Bulbasaur',
-    types: ['grass', 'poison'],
-    entry:
-      'A strange seed was planted on its back at birth. The plant sprouts and grows with this Pokémon.',
-    sprites: {
-      artwork:
-        'https://archives.bulbagarden.net/media/upload/thumb/f/fb/0001Bulbasaur.png/500px-0001Bulbasaur.png',
-      home: 'https://archives.bulbagarden.net/media/upload/thumb/9/9f/HOME0001.png/400px-HOME0001.png',
-
-      pixel:
-        'https://archives.bulbagarden.net/media/upload/a/ad/Spr_2g_001.png',
-    },
-    category: 'kanto',
+    label: '',
+    price: '',
+    categories: [],
+    description: '',
+    images: [],
   }
 }
 function getItems() {
@@ -402,8 +393,8 @@ function getItems() {
 function getDefaultFilter() {
   return {
     txt: '',
-    category: 'all',
-    types: [],
+    categories: [],
+    pageIdx: 0,
   }
 }
 

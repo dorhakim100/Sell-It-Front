@@ -2,6 +2,7 @@ import { StyleSheet, TouchableOpacity, ScrollView } from 'react-native'
 import React, { useState } from 'react'
 
 import defaultStyles from '../config/styles'
+import Categories from './Categories'
 
 export default function CustomCheckInput({ items, values }) {
   return (
@@ -13,13 +14,15 @@ export default function CustomCheckInput({ items, values }) {
       {items.map((item) => {
         return (
           <TouchableOpacity
-            onPress={() => item.onPress(item.label)}
-            key={item.value}
+            key={`${item.value}PickerCategory`}
             style={
               values.includes(item.label) ? styles.checked : styles.notChecked
             }
           >
-            {item.icon}
+            <Categories
+              onPress={() => item.onPress(item.label)}
+              labels={[item.label]}
+            />
           </TouchableOpacity>
         )
       })}

@@ -424,7 +424,7 @@ function ExploreScreen({ navigation }) {
         />
         <SearchInput onSubmit={handleSearchSubmit} />
         {/* <View style={styles.buttonContainer}>
-          <CustomButton style={styles.addButton} handlePress={navigateToAdd}>
+          <CustomButton style={styles.addButton} onPress={navigateToAdd}>
             Add
           </CustomButton>
         </View> */}

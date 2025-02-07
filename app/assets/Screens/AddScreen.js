@@ -1,5 +1,6 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
 
 import * as Yup from 'yup'
 
@@ -15,39 +16,24 @@ import Foundation from '@expo/vector-icons/Foundation'
 
 import defaultStyles from '../config/styles'
 import { addNewItem, addItem } from '../store/actions/item.actions'
-import { itemService } from '../services/item/item.service'
-import Types from '../cmps/Types'
+import { itemService } from '../api/item'
+import Categories from '../cmps/Categories'
 
 import paths from '../navigation/routes'
 
 const validationSchema = Yup.object().shape({
-  num: Yup.number().required().min(1).label('Number'),
-  name: Yup.string().required().min(2).label('Name'),
-  category: Yup.string().required().label('Region'),
+  label: Yup.string().required().min(2).label('Label'),
+  price: Yup.number().required().min(1).label('Price'),
+  description: Yup.string().required().min(2).label('Description'),
   images: Yup.array().required().min(3).label('Images'),
-  types: Yup.array().required().min(1).label('Types'),
+  categories: Yup.array().required().min(1).label('Categories'),
 })
 
 export default function AddScreen({ navigation }) {
-  const [category, setRegion] = useState('')
-
+  const user = useSelector((stateSelector) => stateSelector.userModule.currUser)
   const inputs = [
     {
-      placeholder: 'Item number',
-      icon: (
-        <Foundation
-          name='list-number'
-          size={24}
-          color={defaultStyles.colors.subText}
-        />
-      ),
-
-      name: 'num',
-      type: 'text',
-      keyboardType: 'numeric',
-    },
-    {
-      placeholder: 'Item name',
+      placeholder: 'Label',
       icon: (
         <AntDesign
           name='profile'
@@ -56,8 +42,22 @@ export default function AddScreen({ navigation }) {
         />
       ),
 
-      name: 'name',
+      name: 'label',
       type: 'text',
+    },
+    {
+      placeholder: 'Price',
+      icon: (
+        <Foundation
+          name='list-number'
+          size={24}
+          color={defaultStyles.colors.subText}
+        />
+      ),
+
+      name: 'price',
+      type: 'text',
+      keyboardType: 'numeric',
     },
     {
       icon: (
@@ -72,163 +72,123 @@ export default function AddScreen({ navigation }) {
       type: 'imagePicker',
     },
     {
-      name: 'types',
-      type: 'check',
-
-      options: [
-        {
-          label: 'bug',
-          value: 1,
-          icon: <Types types={['bug']} />,
-        },
-        {
-          label: 'dark',
-          value: 2,
-          icon: <Types types={['dark']} />,
-        },
-        {
-          label: 'dragon',
-          value: 3,
-          icon: <Types types={['dragon']} />,
-        },
-        {
-          label: 'electric',
-          value: 4,
-          icon: <Types types={['electric']} />,
-        },
-        {
-          label: 'fairy',
-          value: 5,
-          icon: <Types types={['fairy']} />,
-        },
-        {
-          label: 'fighting',
-          value: 6,
-          icon: <Types types={['fighting']} />,
-        },
-        {
-          label: 'fire',
-          value: 7,
-          icon: <Types types={['fire']} />,
-        },
-        {
-          label: 'flying',
-          value: 8,
-          icon: <Types types={['flying']} />,
-        },
-        {
-          label: 'ghost',
-          value: 9,
-          icon: <Types types={['ghost']} />,
-        },
-        {
-          label: 'grass',
-          value: 10,
-          icon: <Types types={['grass']} />,
-        },
-        {
-          label: 'ground',
-          value: 11,
-          icon: <Types types={['ground']} />,
-        },
-        {
-          label: 'ice',
-          value: 12,
-          icon: <Types types={['ice']} />,
-        },
-        {
-          label: 'normal',
-          value: 13,
-          icon: <Types types={['normal']} />,
-        },
-        {
-          label: 'poison',
-          value: 14,
-          icon: <Types types={['poison']} />,
-        },
-        {
-          label: 'psychic',
-          value: 15,
-          icon: <Types types={['psychic']} />,
-        },
-        {
-          label: 'rock',
-          value: 16,
-          icon: <Types types={['rock']} />,
-        },
-        {
-          label: 'steel',
-          value: 17,
-          icon: <Types types={['steel']} />,
-        },
-        {
-          label: 'water',
-          value: 18,
-          icon: <Types types={['water']} />,
-        },
-      ],
-    },
-    {
-      placeholder: 'Region',
+      placeholder: 'Description',
+      multiline: true,
       icon: (
-        <FontAwesome6
-          name='earth-africa'
+        <Foundation
+          name='list-number'
           size={24}
           color={defaultStyles.colors.subText}
         />
       ),
 
-      name: 'category',
-      type: 'picker',
-      placeholder: 'Region',
-      style: {
-        backgroundColor: defaultStyles.colors.lightGray,
-      },
+      name: 'description',
+      type: 'text',
+    },
+    {
+      name: 'categories',
+      type: 'check',
+
       options: [
         {
-          label: 'Kanto',
+          label: 'electronics',
+          value: 1,
+          icon: <Categories categories={['electronics']} />,
+        },
+        {
+          label: 'furniture',
           value: 2,
-          onPress: (category) => handleRegionChange(category),
+          icon: <Categories categories={['furniture']} />,
         },
         {
-          label: 'Johto',
+          label: 'clothing',
           value: 3,
-          onPress: (category) => handleRegionChange(category),
+          icon: <Categories categories={['clothing']} />,
         },
         {
-          label: 'Hoenn',
+          label: 'toys & games',
           value: 4,
-          onPress: (category) => handleRegionChange(category),
+          icon: <Categories categories={['toys & games']} />,
         },
         {
-          label: 'Sinnoh',
+          label: 'books',
           value: 5,
-          onPress: (category) => handleRegionChange(category),
+          icon: <Categories categories={['books']} />,
         },
         {
-          label: 'Unova',
+          label: 'sports equipment',
           value: 6,
-          onPress: (category) => handleRegionChange(category),
+          icon: <Categories categories={['sports equipment']} />,
         },
         {
-          label: 'Kalos',
+          label: 'home appliances',
           value: 7,
-          onPress: (category) => handleRegionChange(category),
+          icon: <Categories categories={['home appliances']} />,
         },
         {
-          label: 'Alola',
+          label: 'kitchenware',
           value: 8,
-          onPress: (category) => handleRegionChange(category),
+          icon: <Categories categories={['kitchenware']} />,
         },
         {
-          label: 'Galar',
+          label: 'beauty & personal care',
           value: 9,
-          onPress: (category) => handleRegionChange(category),
+          icon: <Categories categories={['beauty & personal care']} />,
         },
         {
-          label: 'Paldea',
+          label: 'jewelry & watches',
           value: 10,
-          onPress: (category) => handleRegionChange(category),
+          icon: <Categories categories={['jewelry & watches']} />,
+        },
+        {
+          label: 'health & wellness',
+          value: 11,
+          icon: <Categories categories={['health & wellness']} />,
+        },
+        {
+          label: 'baby & kids',
+          value: 12,
+          icon: <Categories categories={['baby & kids']} />,
+        },
+        {
+          label: 'tools & hardware',
+          value: 13,
+          icon: <Categories categories={['tools & hardware']} />,
+        },
+        {
+          label: 'cars & vehicles',
+          value: 14,
+          icon: <Categories categories={['cars & vehicles']} />,
+        },
+        {
+          label: 'bikes & scooters',
+          value: 15,
+          icon: <Categories categories={['bikes & scooters']} />,
+        },
+        {
+          label: 'musical instruments',
+          value: 16,
+          icon: <Categories categories={['musical instruments']} />,
+        },
+        {
+          label: 'collectibles',
+          value: 17,
+          icon: <Categories categories={['collectibles']} />,
+        },
+        {
+          label: 'garden & outdoor',
+          value: 18,
+          icon: <Categories categories={['garden & outdoor']} />,
+        },
+        {
+          label: 'art & crafts',
+          value: 19,
+          icon: <Categories categories={['art & crafts']} />,
+        },
+        {
+          label: 'pets & pet supplies',
+          value: 20,
+          icon: <Categories categories={['pets & pet supplies']} />,
         },
       ],
     },
@@ -236,10 +196,10 @@ export default function AddScreen({ navigation }) {
 
   const [values, setValues] = useState({
     num: '',
-    name: '',
+    label: '',
     category: '',
     images: [],
-    types: [],
+    categories: [],
   })
 
   const [uploadVisible, setUploadVisible] = useState(false)
@@ -250,48 +210,49 @@ export default function AddScreen({ navigation }) {
   }
 
   async function onSubmit(values) {
+    console.log(user)
+    if (!user) return
     try {
       setUploadVisible(true)
 
-      const { num, name, category, images, types } = values
-      if (images.length < 3) {
-        for (let i = 0; i < 3; i++) {
-          if (!images[i]) {
-            images[i] = images[0]
-          }
-        }
-      }
+      const { price, label, description, images, categories } = values
+      // if (images.length < 3) {
+      //   for (let i = 0; i < 3; i++) {
+      //     if (!images[i]) {
+      //       images[i] = images[0]
+      //     }
+      //   }
+      // }
 
-      const newSprites = {
-        artwork: images[0].uri,
-        home: images[1].uri,
+      // const newSprites = {
+      //   artwork: images[0].uri,
+      //   home: images[1].uri,
 
-        pixel: images[2].uri,
-      }
+      //   pixel: images[2].uri,
+      // }
       const item = itemService.getEmptyItem()
 
+      const uris = images.map((image) => image.uri)
+
+      // return
       await addNewItem(
         {
           ...item,
-          num: +num,
-          name,
-          category,
-          sprites: newSprites,
-          types,
+          price: +price,
+          label,
+          description,
+          sellingUser: { id: user._id, fullname: user.fullname },
+          images: uris,
+          categories,
         },
         onProgress
       )
       mimicProgress()
-
       // navigateToMain()
     } catch (err) {
       console.log(err)
     }
   }
-
-  useEffect(() => {
-    console.log(percentage)
-  }, [percentage])
 
   const navigateToMain = () => {
     setUploadVisible(false)
@@ -306,6 +267,10 @@ export default function AddScreen({ navigation }) {
       }, 25 * i)
     }
   }
+
+  useEffect(() => {
+    console.log(percentage)
+  }, [percentage])
 
   function onProgress(per) {
     setPercentage(per)

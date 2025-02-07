@@ -11,13 +11,7 @@ import {
 
 import colors from '../config/color'
 
-function CustomButton({
-  children,
-  handlePress,
-  secondaryColor,
-  disabled,
-  style,
-}) {
+function CustomButton({ children, onPress, secondaryColor, disabled, style }) {
   const buttonContainer = {
     borderRadius: 30,
 
@@ -36,7 +30,7 @@ function CustomButton({
   return (
     <TouchableOpacity
       style={buttonContainer}
-      onPress={handlePress}
+      onPress={onPress}
       disabled={disabled}
     >
       {/* giving CustomButton style directly from parent */}

@@ -55,13 +55,13 @@ function DetailsScreen() {
       <ScrollView>
         {/* <View style={styles.prevNextButtons}>
         <CustomButton
-          handlePress={async () => await navItem(index - 1)}
+          onPress={async () => await navItem(index - 1)}
           disabled={index === 0}
         >
           Previous
         </CustomButton>
         <CustomButton
-          handlePress={async () => await navItem(index + 1)}
+          onPress={async () => await navItem(index + 1)}
           disabled={index === items.length - 1}
         >
           Next

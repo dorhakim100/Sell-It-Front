@@ -55,6 +55,7 @@ export function itemReducer(state = initialState, action) {
 
       break
     case ADD_NEW_ITEM:
+      items = state.items
       const { newItem } = action
 
       newState = {

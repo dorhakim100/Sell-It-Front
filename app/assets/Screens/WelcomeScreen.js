@@ -56,11 +56,11 @@ function WelcomeScreen({ navigation }) {
           </View>
         </TouchableOpacity>
         <View style={styles.buttonsContainer}>
-          <CustomButton handlePress={navigateToLogin} style={styles.button}>
+          <CustomButton onPress={navigateToLogin} style={styles.button}>
             Login
           </CustomButton>
           <CustomButton
-            handlePress={navigateToSignup}
+            onPress={navigateToSignup}
             style={styles.button}
             secondaryColor={true}
           >

@@ -15,7 +15,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons'
 
 import { capitalizeFirstLetter, getFormattedNum } from '../services/utils'
 
-import Types from './Types'
+import Categories from './Categories'
 
 import defaultStyles from '../config/styles'
 import { itemService } from '../services/item/item.service'

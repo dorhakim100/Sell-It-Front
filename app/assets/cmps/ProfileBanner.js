@@ -32,8 +32,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 15,
     padding: 20,
-    marginTop: 25,
-    marginBottom: 40,
+    // marginTop: 25,
+    // marginBottom: 40,
+    marginVertical: 25,
     backgroundColor: colors.strongWhite,
   },
 

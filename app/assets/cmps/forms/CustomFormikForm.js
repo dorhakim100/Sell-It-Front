@@ -61,7 +61,6 @@ export default function CustomFormikForm({
                   break
                 case 'imagePicker':
                   input.onSetImage = (res) => {
-                    console.log(res)
                     setFieldValue(input.name, res)
                   }
 
@@ -82,6 +81,7 @@ export default function CustomFormikForm({
                       } else {
                         values[input.name].push(option.label)
                       }
+
                       setFieldValue(input.name, [...values[input.name]])
                     }
                   })
@@ -105,6 +105,7 @@ export default function CustomFormikForm({
                       value={values[input.name]}
                       onBlur={handleBlur(input.name)}
                       placeholder={input.placeholder}
+                      multiline={input.multiline}
                     >
                       {input.placeholder}
                     </CustomTextInput>
@@ -137,7 +138,7 @@ export default function CustomFormikForm({
               )
             })}
             <View style={styles.buttonContainer}>
-              <CustomButton style={styles.button} handlePress={handleSubmit}>
+              <CustomButton style={styles.button} onPress={handleSubmit}>
                 {button}
               </CustomButton>
             </View>

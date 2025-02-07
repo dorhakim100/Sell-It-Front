@@ -12,7 +12,7 @@ import {
 } from 'react-native'
 import { Image } from 'react-native-expo-image-cache'
 
-import Types from './Types'
+import Categories from './Categories'
 
 import { capitalizeFirstLetter, getFormattedNum } from '../services/utils'
 import { capitalizeWords } from '../services/util.service'

@@ -14,6 +14,7 @@ export default function CustomTextInput({
   style,
   onChangeText,
   onFocus,
+  multiline,
   ...otherProps
 }) {
   const [query, setQuery] = useState('')
@@ -33,8 +34,7 @@ export default function CustomTextInput({
         placeholder={children}
         value={value}
         onFocus={onFocus}
-
-        // multiline // for expending input
+        multiline={multiline} // for expending input
       />
     </View>
   )

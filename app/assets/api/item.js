@@ -8,25 +8,23 @@ import { makeId } from '../services/util.service'
 const query = (filter) => client.get(endpoint, filter)
 
 const post = (itemToAdd, onProgress) => {
-  delete itemToAdd._id
+  // delete itemToAdd._id
   const data = new FormData()
 
-  console.log(itemToAdd)
+  data.append('label', itemToAdd.label)
+  data.append('price', itemToAdd.price)
+  data.append('description', itemToAdd.description)
 
-  data.append('num', itemToAdd.num)
-  data.append('name', itemToAdd.name)
-  data.append('entry', itemToAdd.entry)
-  data.append('category', itemToAdd.category)
+  itemToAdd.categories.forEach((category, index) =>
+    data.append('categories', category)
+  )
 
-  itemToAdd.types.forEach((type, index) => data.append('types', type))
+  const stringifyArray = JSON.stringify(itemToAdd.images)
 
-  for (const imageType in itemToAdd.sprites) {
-    data.append(`sprites[${imageType}]`, itemToAdd.sprites[imageType])
-    // data.append(`sprites[${imageType}]`, {
-    //   name: makeId(),
-    //   type: 'image/jpeg',
-    //   uri: itemToAdd.sprites[imageType],
-    // })
+  data.append('images', stringifyArray)
+
+  for (const property in itemToAdd.sellingUser) {
+    data.append(`sellingUser[${property}]`, itemToAdd.sellingUser[property])
   }
 
   return client.post(`${endpoint}`, data, {
@@ -40,6 +38,7 @@ export const itemService = {
   getDefaultFilter,
   post,
   getMaxPage,
+  getEmptyItem,
 }
 
 function getDefaultFilter() {
@@ -47,6 +46,17 @@ function getDefaultFilter() {
     txt: '',
     categories: [],
     pageIdx: 0,
+  }
+}
+
+function getEmptyItem() {
+  return {
+    _id: '679b7b4f1d197b22a0ae6f00',
+    label: '',
+    price: '',
+    categories: [],
+    description: '',
+    images: [],
   }
 }
 
