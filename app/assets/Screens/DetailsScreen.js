@@ -79,6 +79,7 @@ function DetailsScreen({ navigation }) {
 
     try {
       const res = await addToCart(currItem._id)
+
       if (!res.ok)
         return Alert.alert(
           'Error', // Title of the alert
@@ -127,7 +128,11 @@ function DetailsScreen({ navigation }) {
           Next
         </CustomButton>
       </View> */}
-        <ItemContainer currItem={currItem} addToCart={onAddToCart} />
+        <ItemContainer
+          currItem={currItem}
+          addToCart={onAddToCart}
+          user={user}
+        />
         <View style={styles.textContainer}>
           <CustomText style={styles.text}>{currItem.description}</CustomText>
         </View>

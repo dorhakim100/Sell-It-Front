@@ -26,8 +26,11 @@ import ProfileBanner from './ProfileBanner'
 const screenWidth = Dimensions.get('window').width
 const imageWidth = screenWidth * 0.8
 
-const ItemContainer = ({ currItem, onPress, addToCart }) => {
+const ItemContainer = ({ currItem, onPress, addToCart, user }) => {
   const [isHome, setIsHome] = useState(false)
+
+  console.log(currItem._id)
+  console.log(user.items)
 
   return (
     <TouchableWithoutFeedback onPress={onPress}>
@@ -40,7 +43,12 @@ const ItemContainer = ({ currItem, onPress, addToCart }) => {
         </View>
 
         {/* <Types types={currItem.types} /> */}
-        <CustomButton onPress={addToCart}>Add To Cart</CustomButton>
+        <CustomButton
+          onPress={addToCart}
+          disabled={user.items.includes(currItem._id)}
+        >
+          Add To Cart
+        </CustomButton>
       </View>
     </TouchableWithoutFeedback>
   )

@@ -71,7 +71,12 @@ export function setRemembered(token) {
 
 export async function signup(credentials) {
   try {
-    const res = await userService.signup(credentials)
+    const userToSave = {
+      ...credentials,
+      image: '',
+      items: [],
+    }
+    const res = await userService.signup(userToSave)
     if (!res.ok) return res
     const { token } = res.data
     await authStorage.storeToken(token)

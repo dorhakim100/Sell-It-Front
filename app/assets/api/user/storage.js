@@ -1,5 +1,5 @@
 import * as SecureStore from 'expo-secure-store'
-import jwtDecode from 'jwt-decode'
+import { jwtDecode } from 'jwt-decode'
 import { setRemembered } from '../../store/actions/user.actions'
 
 const key = 'authToken'
@@ -31,6 +31,7 @@ const setRememberedUser = async () => {
 
 const getUser = async () => {
   const token = await getToken()
+
   return token ? jwtDecode(token) : null
 }
 
@@ -42,4 +43,4 @@ const removeToken = async () => {
   }
 }
 
-export default { setRememberedUser, getUser, removeToken, storeToken }
+export default { setRememberedUser, getUser, removeToken, storeToken, getToken }

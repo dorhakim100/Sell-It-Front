@@ -1,6 +1,8 @@
 import { create } from 'apisauce'
 import cache from '../utility/cache'
 
+import authStorage from '../api/user/storage'
+
 // const MY_IP = '192.168.1.237' // home
 // const MY_IP = '192.168.200.208' // work
 const MY_IP = 'localhost' // or '127.0.0.1'
@@ -13,14 +15,39 @@ const apiClient = create({
 
 const get = apiClient.get
 apiClient.get = async (url, params, axiosConfig) => {
+  const token = await authStorage.getToken()
+  if (token) {
+    axiosConfig.headers = {
+      ...axiosConfig.headers,
+      Authorization: `Bearer ${token}`,
+    }
+  }
   const response = await get(url, params, axiosConfig)
-  console.log(response)
+
   if (response.ok) {
     cache.store(url, response.data)
     return response
   }
 
   const data = await cache.get(url)
+  return data ? { ok: true, data } : response
+}
+apiClient.put = async (url, params, axiosConfig) => {
+  const token = await authStorage.getToken()
+  if (token) {
+    axiosConfig.headers = {
+      ...axiosConfig.headers,
+      Authorization: `Bearer ${token}`,
+    }
+  }
+  const response = await put(url, params, axiosConfig)
+
+  if (response.ok) {
+    cache.store(url, response.data)
+    return response
+  }
+
+  const data = await cache.put(url)
   return data ? { ok: true, data } : response
 }
 

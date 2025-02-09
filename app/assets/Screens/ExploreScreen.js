@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
+import { useFocusEffect } from '@react-navigation/native'
+
 import { useSelector } from 'react-redux'
 import {
   View,
@@ -40,6 +42,7 @@ import {
   loadItem,
   loadItems,
   removeItem,
+  setItemFilter,
 } from '../store/actions/item.actions'
 import colors from '../config/color'
 import paths from '../navigation/routes'
@@ -340,6 +343,12 @@ function ExploreScreen({ navigation }) {
       onPress: (category) => handleCategoryChange(category),
     },
   ]
+
+  useFocusEffect(
+    React.useCallback(() => {
+      setItems({ ...filter, soldBy: '' })
+    }, [])
+  )
 
   const setItems = async (filter) => {
     try {
