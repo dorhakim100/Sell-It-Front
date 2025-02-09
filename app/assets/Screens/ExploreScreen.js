@@ -361,7 +361,9 @@ function ExploreScreen({ navigation }) {
   }
 
   function handleCategoryChange(category) {
-    setFilter({ ...filter, category })
+    if (!category) return setFilter({ ...filter, categories: [] })
+
+    setFilter({ ...filter, categories: [category] })
   }
 
   function onItemPickerPress(item) {
@@ -379,15 +381,25 @@ function ExploreScreen({ navigation }) {
   }
 
   const getPageIdxItems = async (pageToSet) => {
-    const filterBy = { ...filter, pageIdx: pageToSet }
-    return await getPageItems(filterBy)
+    try {
+      const filterBy = { ...filter, pageIdx: pageToSet }
+      return await getPageItems(filterBy)
+    } catch (err) {
+      console.log(err)
+    }
   }
 
   const [keyboardOffset, setKeyboardOffset] = useState(0)
 
   const setItem = async (itemId) => {
-    await loadItem(itemId)
-    navigation.navigate(paths.DETAILS)
+    try {
+      const res = await loadItem(itemId)
+      if (!res.ok) return alert(`Couldn't load item`)
+
+      navigation.navigate(paths.DETAILS)
+    } catch (err) {
+      console.log(err)
+    }
   }
 
   const handleAdd = async (item, swipeableRef) => {
@@ -411,17 +423,26 @@ function ExploreScreen({ navigation }) {
             <CustomButton onPress={() => setItems(filter)}>Retry</CustomButton>
           </>
         )}
-        <CustomPicker
-          placeholder={'Category'}
-          value={
-            filter.categories.length > 0
-              ? capitalizeWords(filter.category)
-              : 'Category'
-          }
-          icon={'apps'}
-          items={categories}
-          onPress={onItemPickerPress}
-        />
+        <View style={styles.pickerContainer}>
+          <CustomPicker
+            placeholder={'Category'}
+            value={
+              filter.categories[0]
+                ? capitalizeWords(filter.categories[0])
+                : 'Category'
+            }
+            icon={'apps'}
+            items={categories}
+            onPress={onItemPickerPress}
+          />
+          <CustomButton
+            style={styles.ClearButton}
+            secondaryColor={true}
+            onPress={() => handleCategoryChange()}
+          >
+            Clear
+          </CustomButton>
+        </View>
         <SearchInput onSubmit={handleSearchSubmit} />
         {/* <View style={styles.buttonContainer}>
           <CustomButton style={styles.addButton} onPress={navigateToAdd}>
@@ -478,6 +499,11 @@ const styles = StyleSheet.create({
 
     flex: 1,
     // paddingBottom: 20,
+  },
+
+  pickerContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 
   preview: {

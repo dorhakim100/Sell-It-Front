@@ -1,6 +1,8 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { Alert, StyleSheet, Text, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
+
+import useLocation from '../services/customHooks/useLocation'
 
 import * as Yup from 'yup'
 
@@ -31,6 +33,8 @@ const validationSchema = Yup.object().shape({
 
 export default function AddScreen({ navigation }) {
   const user = useSelector((stateSelector) => stateSelector.userModule.currUser)
+  const location = useLocation()
+
   const inputs = [
     {
       placeholder: 'Label',
@@ -210,7 +214,8 @@ export default function AddScreen({ navigation }) {
   }
 
   async function onSubmit(values) {
-    console.log(user)
+    if (!location) return alert('Enable location first')
+
     if (!user) return
     try {
       setUploadVisible(true)
@@ -244,6 +249,7 @@ export default function AddScreen({ navigation }) {
           sellingUser: { id: user._id, fullname: user.fullname },
           images: uris,
           categories,
+          location,
         },
         onProgress
       )

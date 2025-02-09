@@ -7,10 +7,11 @@ import {
   TouchableOpacity,
   Dimensions,
   Platform,
+  Alert,
 } from 'react-native'
 
 import { useSelector } from 'react-redux'
-import { loadItem, navItem } from '../store/actions/item.actions'
+import { addToCart, loadItem, navItem } from '../store/actions/item.actions'
 
 import Constants from 'expo-constants'
 
@@ -25,9 +26,11 @@ import { convertCorsToNumber } from '../services/util.service'
 import { ScrollView } from 'react-native-gesture-handler'
 import CustomText from '../cmps/CustomText'
 
+import paths from '../navigation/routes'
+
 const screenWidth = Dimensions.width
 
-function DetailsScreen() {
+function DetailsScreen({ navigation }) {
   const currItem = useSelector(
     (stateSelector) => stateSelector.itemModule.currItem
   )
@@ -36,6 +39,8 @@ function DetailsScreen() {
   const [index, setIndex] = useState()
 
   const [cords, setCords] = useState()
+
+  const user = useSelector((stateSelector) => stateSelector.userModule.currUser)
 
   useEffect(() => {
     const idx = items.findIndex((item) => item._id === currItem._id)
@@ -49,6 +54,61 @@ function DetailsScreen() {
       longitudeDelta: 0.05,
     })
   }, [currItem])
+
+  const navigateToLogin = () => {
+    navigation.navigate(paths.LOGIN)
+  }
+  const navigateToCart = () => {
+    navigation.navigate(paths.LIST)
+  }
+
+  async function onAddToCart() {
+    if (!user)
+      return Alert.alert(
+        'Login', // Title of the alert
+        'To add item, first Login', // Message
+        [
+          {
+            text: 'Cancel', // Button text
+            onPress: () => console.log('Cancel Pressed'),
+            style: 'cancel', // Optional: styles the button as a cancel button
+          },
+          { text: 'OK', onPress: navigateToLogin },
+        ]
+      )
+
+    try {
+      const res = await addToCart(currItem._id)
+      if (!res.ok)
+        return Alert.alert(
+          'Error', // Title of the alert
+          'Could not add item to cart', // Message
+          [
+            {
+              text: 'Cancel', // Button text
+              onPress: () => console.log('Cancel Pressed'),
+              style: 'cancel', // Optional: styles the button as a cancel button
+            },
+            // { text: 'OK', onPress: navigateToLogin },
+          ]
+        )
+
+      return Alert.alert(
+        'Success', // Title of the alert
+        'Item added successfully!', // Message
+        [
+          {
+            text: 'Cancel', // Button text
+            onPress: () => console.log('Cancel Pressed'),
+            style: 'cancel', // Optional: styles the button as a cancel button
+          },
+          { text: 'My Cart', onPress: navigateToCart },
+        ]
+      )
+    } catch (err) {
+      console.log(err)
+    }
+  }
 
   return (
     <Screen>
@@ -67,7 +127,7 @@ function DetailsScreen() {
           Next
         </CustomButton>
       </View> */}
-        <ItemContainer currItem={currItem} />
+        <ItemContainer currItem={currItem} addToCart={onAddToCart} />
         <View style={styles.textContainer}>
           <CustomText style={styles.text}>{currItem.description}</CustomText>
         </View>

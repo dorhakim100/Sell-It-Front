@@ -26,6 +26,9 @@ const post = (itemToAdd, onProgress) => {
   for (const property in itemToAdd.sellingUser) {
     data.append(`sellingUser[${property}]`, itemToAdd.sellingUser[property])
   }
+  for (const property in itemToAdd.location) {
+    data.append(`location[${property}]`, itemToAdd.location[property])
+  }
 
   return client.post(`${endpoint}`, data, {
     onUploadProgress: (progress) =>
@@ -33,12 +36,16 @@ const post = (itemToAdd, onProgress) => {
   })
 }
 
+const getById = (itemId, filter = getDefaultFilter()) =>
+  client.get(`${endpoint}/${itemId}`, filter)
+
 export const itemService = {
   query,
   getDefaultFilter,
   post,
   getMaxPage,
   getEmptyItem,
+  getById,
 }
 
 function getDefaultFilter() {

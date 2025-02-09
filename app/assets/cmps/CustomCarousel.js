@@ -7,12 +7,13 @@ import Carousel from 'react-native-reanimated-carousel'
 
 const screenWidth = Dimensions.get('window').width
 const imageWidth = screenWidth * 0.8
+const HEIGHT = 200
 
 const renderItem = ({ item }) => (
   <View style={{ justifyContent: 'center', alignItems: 'center' }}>
     <Image
       uri={item}
-      style={{ width: imageWidth * 0.8, height: 200, borderRadius: 10 }}
+      style={{ width: imageWidth * 0.8, height: HEIGHT, borderRadius: 10 }}
     />
   </View>
 )
@@ -24,7 +25,7 @@ export default function CustomCarousel({ images }) {
       <Carousel
         loop
         width={imageWidth}
-        height={200}
+        height={HEIGHT}
         autoPlay
         autoPlayInterval={3000}
         data={images}
@@ -40,6 +41,6 @@ const styles = StyleSheet.create({
     // flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    height: 220,
+    height: HEIGHT,
   },
 })

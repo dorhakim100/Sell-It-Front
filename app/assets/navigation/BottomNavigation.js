@@ -25,6 +25,7 @@ import SignupScreen from '../Screens/SignupScreen'
 
 import colors from '../config/color'
 import MyList from '../Screens/MyList'
+import MyItems from '../Screens/MyItems'
 import AddScreen from '../Screens/AddScreen'
 
 import defaultStyles from '../config/styles'
@@ -251,7 +252,16 @@ export default function AppNavigator() {
         options={{ headerShown: true }}
       />
       <Stack.Screen name={paths.ADD} component={AddScreen} />
-      <Stack.Screen name={paths.LIST} component={MyList} />
+      <Stack.Screen
+        name={paths.MY_ITEMS}
+        component={MyItems}
+        options={{ headerShown: true, headerTitle: 'My Items' }}
+      />
+      <Stack.Screen
+        name={paths.LIST}
+        component={MyList}
+        options={{ headerShown: true, headerTitle: 'Wishlist' }}
+      />
     </Stack.Navigator>
   )
 }

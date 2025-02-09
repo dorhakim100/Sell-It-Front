@@ -19,6 +19,7 @@ import Categories from './Categories'
 
 import defaultStyles from '../config/styles'
 import { itemService } from '../services/item/item.service'
+import CustomButton from './CustomButton'
 
 const screenWidth = Dimensions.get('window').width
 
@@ -26,36 +27,32 @@ function ItemPreview({ item, setItem, renderRightAction, onSwipeableOpen }) {
   const itemRef = useRef(null)
 
   return (
-    <Swipeable
-      renderRightActions={renderRightAction}
-      onSwipeableOpen={() => onSwipeableOpen(itemRef)}
-      ref={itemRef}
+    // <Swipeable // uncomment for swipable functionality
+    //   renderRightActions={renderRightAction}
+    //   onSwipeableOpen={() => onSwipeableOpen(itemRef)}
+    //   ref={itemRef}
+    // >
+    <TouchableOpacity
+      // underlayColor={defaultStyles.colors.blueHighlight}
+      onPress={() => setItem(item._id)}
+      style={styles.preview}
     >
-      <TouchableOpacity
-        // underlayColor={defaultStyles.colors.blueHighlight}
-        onPress={() => setItem(item._id)}
-        style={styles.preview}
-      >
-        <View style={styles.container}>
-          {/* <Text style={styles.num}>{getFormattedNum(item.num)}</Text> */}
+      <View style={styles.container}>
+        {/* <Text style={styles.num}>{getFormattedNum(item.num)}</Text> */}
 
-          <Image uri={item.images[0]} style={styles.image}></Image>
+        <Image uri={item.images[0]} style={styles.image}></Image>
 
-          <Text style={styles.name} numberOfLines={1}>
-            {item.label}
-            {/* <MaterialCommunityIcons
+        <Text style={styles.name} numberOfLines={1}>
+          {item.label}
+          {/* <MaterialCommunityIcons
               name={'chevron-right'}
               size={20}
               color={defaultStyles.colors.darkGray}
             /> */}
-          </Text>
-
-          {/* <View style={styles.types}>
-            <Types types={item.types} isSprite={true} />
-          </View> */}
-        </View>
-      </TouchableOpacity>
-    </Swipeable>
+        </Text>
+      </View>
+    </TouchableOpacity>
+    // </Swipeable>
   )
 }
 
@@ -75,6 +72,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     borderRadius: 8,
     marginVertical: 10,
+    gap: 10,
   },
 
   preview: {},
@@ -96,7 +94,8 @@ const styles = StyleSheet.create({
   },
 
   image: {
-    margin: 10,
+    marginTop: 10,
+
     height: 150,
     width: 280,
     borderRadius: 5,

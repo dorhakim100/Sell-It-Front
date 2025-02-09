@@ -4,6 +4,7 @@ import React from 'react'
 import Feather from '@expo/vector-icons/Feather'
 import MaterialIcons from '@expo/vector-icons/MaterialIcons'
 import Entypo from '@expo/vector-icons/Entypo'
+import AntDesign from '@expo/vector-icons/AntDesign'
 
 import Screen from './Screen'
 import ProfileBanner from '../cmps/ProfileBanner'
@@ -31,6 +32,11 @@ export default function AccountScreen({ navigation }) {
     {
       text: 'My Items',
       icon: <ListIcon />,
+      onPress: () => navigateToScreen(paths.MY_ITEMS),
+    },
+    {
+      text: 'Wish List',
+      icon: <WishlistIcon />,
       onPress: () => navigateToScreen(paths.LIST),
     },
     {
@@ -90,13 +96,13 @@ export default function AccountScreen({ navigation }) {
           </View>
         )}
         <CustomMap
-          cords={{
-            latitude: 32.1845,
-            longitude: 34.8706,
-            latitudeDelta: 0.05,
-            longitudeDelta: 0.05,
-          }}
-          isFixed={true}
+        // cords={{
+        //   latitude: 32.1845,
+        //   longitude: 34.8706,
+        //   latitudeDelta: 0.05,
+        //   longitudeDelta: 0.05,
+        // }}
+        // isFixed={true}
         />
       </ScrollView>
     </Screen>
@@ -107,6 +113,18 @@ const ListIcon = () => {
   return (
     <View style={styles.listContainer}>
       <Feather style={styles.icon} name='list' size={24} color='black' />
+    </View>
+  )
+}
+const WishlistIcon = () => {
+  return (
+    <View style={styles.wishlistContainer}>
+      <AntDesign
+        name='shoppingcart'
+        style={styles.icon}
+        size={24}
+        color='black'
+      />
     </View>
   )
 }
@@ -154,6 +172,11 @@ const styles = StyleSheet.create({
 
   listContainer: {
     backgroundColor: colors.primary,
+    borderRadius: 50,
+    margin: 10,
+  },
+  wishlistContainer: {
+    backgroundColor: colors.addGreen,
     borderRadius: 50,
     margin: 10,
   },

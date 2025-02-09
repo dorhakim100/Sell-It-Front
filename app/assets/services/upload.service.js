@@ -18,7 +18,7 @@ async function uploadImg() {
   let permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync()
   if (permissionResult.granted === false) {
     alert('Permission to access the media library is required!')
-    return
+    return false
   }
 
   // Pick an image from the media library

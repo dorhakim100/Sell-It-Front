@@ -9,16 +9,25 @@ import {
 } from 'react-native'
 
 import React, { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
 
 import * as ImagePicker from 'expo-image-picker'
+
+import { Button } from 'react-native-paper'
 
 import defaultStyles from '../config/styles'
 import CustomButton from './CustomButton'
 import { makeId } from '../services/utils'
 import { uploadService } from '../services/upload.service'
+import { setIsLoading } from '../store/actions/system.actions'
 
 export default function CustomImagePicker({ input }) {
   const [imagesUri, setImagesUri] = useState([])
+
+  const isLoading = useSelector(
+    (stateSelector) => stateSelector.systemModule.isLoading
+  )
+
   useEffect(() => {
     askPermission()
   }, [])
@@ -38,10 +47,12 @@ export default function CustomImagePicker({ input }) {
 
   const selectImage = async () => {
     try {
+      setIsLoading(true)
       // const res = await ImagePicker.launchImageLibraryAsync()
-      const res = await uploadService.uploadImg()
+      const uri = await uploadService.uploadImg()
 
-      const uri = res
+      if (!uri) return
+
       let newImages
       if (!imagesUri[0]) {
         newImages = [{ uri, id: makeId() }]
@@ -53,6 +64,8 @@ export default function CustomImagePicker({ input }) {
       input.onSetImage(newImages)
     } catch (err) {
       console.log(err)
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -100,7 +113,17 @@ export default function CustomImagePicker({ input }) {
           <Image source={require('../imgs/camera.jpg')} style={styles.img} />
         )}
       </ScrollView>
-      <CustomButton onPress={selectImage}>Upload</CustomButton>
+      {/* <CustomButton onPress={selectImage}>Upload</CustomButton> */}
+      <Button
+        icon='camera'
+        mode='contained'
+        onPress={selectImage}
+        buttonColor={defaultStyles.colors.second}
+        loading={isLoading}
+        disabled={isLoading}
+      >
+        Upload
+      </Button>
     </View>
   )
 }

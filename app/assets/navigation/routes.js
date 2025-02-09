@@ -9,4 +9,5 @@ export default Object.freeze({
   ADD: 'Add',
   LIST: 'List',
   MESSAGES: 'Messages',
+  MY_ITEMS: 'MyItems',
 })

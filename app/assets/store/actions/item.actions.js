@@ -34,6 +34,13 @@ export async function loadItems(filterBy) {
     throw err
   }
 }
+
+export function setItemFilter(filterToSet) {
+  store.dispatch({
+    type: SET_FILTER,
+    filterToSet,
+  })
+}
 export async function getPageItems(filterBy) {
   try {
     const res = await itemService.query(filterBy)
@@ -61,10 +68,14 @@ export async function getPageItems(filterBy) {
 
 export async function loadItem(itemId) {
   try {
+    const res = await itemService.getById(itemId)
+    if (!res.ok) return res
+    const item = res.data
     store.dispatch({
       type: SET_ITEM,
-      idToSet: itemId,
+      itemToSet: item,
     })
+    return res
   } catch (err) {
     // console.log('Cannot load item', err)
     throw err
@@ -78,17 +89,19 @@ export function loadMyItems() {
   }
 }
 
-export async function addItem(itemId) {
+export async function addToCart(itemId) {
   try {
-    const res = await itemService.query(itemService.getDefaultFilter())
-    const items = res.data
+    const res = await itemService.getById(itemId)
 
-    const itemToAdd = items.find((item) => item._id === itemId)
+    if (!res.ok) return res
+
+    const item = res.data
 
     store.dispatch({
       type: ADD_ITEM,
-      itemToAdd,
+      itemToAdd: item,
     })
+    return res
   } catch (err) {
     throw err
   }

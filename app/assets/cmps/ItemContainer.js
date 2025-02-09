@@ -19,13 +19,14 @@ import { capitalizeWords } from '../services/util.service'
 import { LinearGradient } from 'react-native-svg'
 import colors from '../config/color'
 import CustomText from './CustomText'
+import CustomButton from './CustomButton'
 import CustomCarousel from './CustomCarousel'
 import ProfileBanner from './ProfileBanner'
 
 const screenWidth = Dimensions.get('window').width
 const imageWidth = screenWidth * 0.8
 
-const ItemContainer = ({ currItem, onPress }) => {
+const ItemContainer = ({ currItem, onPress, addToCart }) => {
   const [isHome, setIsHome] = useState(false)
 
   return (
@@ -39,6 +40,7 @@ const ItemContainer = ({ currItem, onPress }) => {
         </View>
 
         {/* <Types types={currItem.types} /> */}
+        <CustomButton onPress={addToCart}>Add To Cart</CustomButton>
       </View>
     </TouchableWithoutFeedback>
   )
@@ -46,8 +48,7 @@ const ItemContainer = ({ currItem, onPress }) => {
 
 const styles = StyleSheet.create({
   container: {
-    // gap: 5,
-
+    gap: 10,
     alignItems: 'center',
     width: screenWidth,
     shadowColor: 'gray',
@@ -57,7 +58,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.whiteBackground,
     borderRadius: 15,
     padding: 10,
-    marginTop: 5,
+    marginTop: 15,
     marginBottom: 5,
     width: screenWidth * 0.9,
 
@@ -77,7 +78,7 @@ const styles = StyleSheet.create({
   },
 
   spriteImg: {
-    width: screenWidth * 0.8,
+    // width: screenWidth * 0.8,
     // height: screenWidth * 0.8,
   },
 

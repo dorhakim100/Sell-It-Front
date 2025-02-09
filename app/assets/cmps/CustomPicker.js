@@ -113,6 +113,7 @@ const styles = StyleSheet.create({
 
     backgroundColor: defaultStyles.colors.strongWhite,
     borderRadius: 50,
+    maxWidth: '80%',
   },
 
   textContainer: {
