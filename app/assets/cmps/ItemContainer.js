@@ -29,9 +29,6 @@ const imageWidth = screenWidth * 0.8
 const ItemContainer = ({ currItem, onPress, addToCart, user }) => {
   const [isHome, setIsHome] = useState(false)
 
-  console.log(currItem._id)
-  console.log(user.items)
-
   return (
     <TouchableWithoutFeedback onPress={onPress}>
       <View style={styles.container}>

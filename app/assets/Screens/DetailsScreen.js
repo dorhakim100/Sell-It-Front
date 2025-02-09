@@ -78,7 +78,8 @@ function DetailsScreen({ navigation }) {
       )
 
     try {
-      const res = await addToCart(currItem._id)
+      const newCart = [currItem._id, ...user.items]
+      const res = await addToCart(newCart)
 
       if (!res.ok)
         return Alert.alert(

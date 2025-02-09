@@ -14,14 +14,15 @@ const apiClient = create({
 })
 
 const get = apiClient.get
+const put = apiClient.put
 apiClient.get = async (url, params, axiosConfig) => {
-  const token = await authStorage.getToken()
-  if (token) {
-    axiosConfig.headers = {
-      ...axiosConfig.headers,
-      Authorization: `Bearer ${token}`,
-    }
-  }
+  // const token = await authStorage.getToken()
+  // if (token) {
+  //   axiosConfig.headers = {
+  //     ...axiosConfig.headers,
+  //     Authorization: `Bearer ${token}`,
+  //   }
+  // }
   const response = await get(url, params, axiosConfig)
 
   if (response.ok) {

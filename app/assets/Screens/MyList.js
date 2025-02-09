@@ -19,6 +19,7 @@ function MyList({ navigation }) {
   const myItems = useSelector(
     (stateSelector) => stateSelector.itemModule.myItems
   )
+  const user = useSelector((stateSelector) => stateSelector.userModule.currUser)
 
   const [isRefreshing, setIsRefreshing] = useState(false)
 
@@ -39,6 +40,30 @@ function MyList({ navigation }) {
     swipeableRef.current = null
     const itemId = item._id
     removeItem(itemId)
+  }
+
+  useEffect(() => {
+    setItems()
+  }, [])
+
+  const setItems = async () => {
+    if (!user) return
+    console.log(user)
+    try {
+      const res = await loadItems({
+        ...itemService.getDefaultFilter(),
+        itemsIds: user.items,
+      })
+      if (!res.ok) return
+      const maxPageRes = await itemService.getMaxPage({
+        ...itemService.getDefaultFilter(),
+        itemsIds: user.items,
+      })
+      if (!maxPageRes.ok) return
+      setMaxPage(maxPageRes.data)
+    } catch (err) {
+      console.log(err)
+    }
   }
   return (
     <Screen hasNavigationBar={true}>

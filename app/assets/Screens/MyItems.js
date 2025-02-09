@@ -20,6 +20,9 @@ import { itemService } from '../services/item/item.service'
 import CustomText from '../cmps/CustomText'
 
 import paths from '../navigation/routes'
+import CustomLottieAnimation from '../cmps/CustomLottieAnimation'
+
+import post from '../animation/post/post.json'
 
 function MyItems({ navigation }) {
   const myItems = useSelector((stateSelector) => stateSelector.itemModule.items)
@@ -87,7 +90,12 @@ function MyItems({ navigation }) {
   return (
     <Screen hasNavigationBar={true}>
       {(myItems.length === 0 && (
-        <CustomText style={styles.emptyList}>Add Items first...</CustomText>
+        <>
+          <CustomText style={styles.emptyList}>
+            Post new Item first...
+          </CustomText>
+          <CustomLottieAnimation animation={post} visible={true} />
+        </>
       )) || (
         <ItemList
           items={myItems}
@@ -104,7 +112,7 @@ function MyItems({ navigation }) {
 
 const styles = StyleSheet.create({
   emptyList: {
-    flex: 1,
+    // flex: 1,
     alignSelf: 'center',
     textAlign: 'center',
     padding: 20,

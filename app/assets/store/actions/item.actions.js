@@ -8,6 +8,7 @@ import {
   ADD_NEW_ITEM,
   SET_FILTER,
   SET_NEW_ITEMS,
+  SET_MY_ITEMS,
 } from '../reducers/item.reducer'
 import { SET_USER } from '../reducers/user.reducer'
 import authStorage from '../../api/user/storage'
@@ -19,7 +20,7 @@ export async function loadItems(filterBy) {
   try {
     console.log(filterBy)
     const res = await itemService.query(filterBy)
-    console.log(res)
+
     if (!res.ok) throw res
 
     const items = res.data
@@ -27,6 +28,13 @@ export async function loadItems(filterBy) {
       type: SET_FILTER,
       filterToSet: filterBy,
     })
+    if (filterBy.itemsIds && filterBy.itemsIds.length > 0) {
+      console.log(items)
+      store.dispatch({
+        type: SET_MY_ITEMS,
+        items,
+      })
+    }
     store.dispatch({
       type: SET_ITEMS,
       items,
@@ -93,48 +101,30 @@ export function loadMyItems() {
   }
 }
 
-export async function addToCart(itemId) {
+export async function addToCart(newItems) {
   try {
-    console.log(itemId)
     const token = await authStorage.getToken()
-    console.log(token)
+
     const user = jwtDecode(token)
 
-    if (user.items.includes(itemId)) return
-
     if (!user) return { ok: false }
-    const res = await itemService.getById(itemId)
-
-    if (!res.ok) return res
-
-    const item = res.data
-
-    const originalItems = user.items
-
-    console.log({
-      ...user,
-      items: [itemId, ...originalItems],
-    })
 
     const updateRes = await userService.update(
       {
         ...user,
-        items: [itemId, ...originalItems],
+        items: [...newItems],
       },
       token
     )
+
     if (!updateRes.ok) return updateRes
 
-    store.dispatch({
-      type: ADD_ITEM,
-      itemToAdd: item,
-    })
     store.dispatch({
       type: SET_USER,
       currUser: updateRes.data,
     })
 
-    return res
+    return updateRes
   } catch (err) {
     throw err
   }

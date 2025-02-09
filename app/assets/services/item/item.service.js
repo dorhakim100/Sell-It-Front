@@ -396,6 +396,7 @@ function getDefaultFilter() {
     categories: [],
     pageIdx: 0,
     soldBy: '',
+    itemsIds: [],
   }
 }
 
