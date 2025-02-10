@@ -27,6 +27,7 @@ import colors from '../config/color'
 import MyList from '../Screens/MyList'
 import MyItems from '../Screens/MyItems'
 import AddScreen from '../Screens/AddScreen'
+import AccountSettings from '../Screens/AccountSettings'
 
 import defaultStyles from '../config/styles'
 import NewListingButton from './NewListingButton'
@@ -261,6 +262,11 @@ export default function AppNavigator() {
         name={paths.LIST}
         component={MyList}
         options={{ headerShown: true, headerTitle: 'Wishlist' }}
+      />
+      <Stack.Screen
+        name={paths.ACCOUNT_SETTINGS}
+        component={AccountSettings}
+        options={{ headerShown: true, headerTitle: 'Account Settings' }}
       />
     </Stack.Navigator>
   )

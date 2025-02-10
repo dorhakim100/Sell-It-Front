@@ -30,6 +30,11 @@ export default function AccountScreen({ navigation }) {
 
   const list = [
     {
+      text: 'Account Settings',
+      icon: <AccountIcon />,
+      onPress: () => navigateToScreen(paths.ACCOUNT_SETTINGS),
+    },
+    {
       text: 'My Items',
       icon: <ListIcon />,
       onPress: () => navigateToScreen(paths.MY_ITEMS),
@@ -109,6 +114,18 @@ export default function AccountScreen({ navigation }) {
   )
 }
 
+const AccountIcon = () => {
+  return (
+    <View style={styles.listContainer}>
+      <MaterialIcons
+        style={styles.icon}
+        name='account-box'
+        size={24}
+        color='black'
+      />
+    </View>
+  )
+}
 const ListIcon = () => {
   return (
     <View style={styles.listContainer}>

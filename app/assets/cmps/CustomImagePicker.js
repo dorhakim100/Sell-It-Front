@@ -46,6 +46,11 @@ export default function CustomImagePicker({ input }) {
   }
 
   const selectImage = async () => {
+    if (input.maxImages && imagesUri.length === input.maxImages) {
+      const newImages = imagesUri
+      newImages.splice(input.maxImages - 1, 1)
+      setImagesUri([...newImages])
+    }
     try {
       setIsLoading(true)
       // const res = await ImagePicker.launchImageLibraryAsync()

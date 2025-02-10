@@ -125,11 +125,24 @@ export async function loadUser(userId) {
 export async function updateCart(user) {
   const cart = [...user.items]
 
-  store.dispatch({ type: UPDATE_CART, cart })
-  store.dispatch({ type: SET_USER, user })
+  // store.dispatch({ type: UPDATE_CART, cart })
+  // store.dispatch({ type: SET_USER, user })
 
   try {
-    const saved = await userService.update(user)
+    const token = await authStorage.getToken()
+    const saved = await userService.update(user, token)
+    return saved
+  } catch (err) {
+    // console.log(err)
+    throw err
+  }
+}
+export async function updateUser(user) {
+  try {
+    const token = await authStorage.getToken()
+    console.log(token)
+    console.log(user)
+    const saved = await userService.update(user, token)
     return saved
   } catch (err) {
     // console.log(err)

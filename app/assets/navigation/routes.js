@@ -10,4 +10,5 @@ export default Object.freeze({
   LIST: 'List',
   MESSAGES: 'Messages',
   MY_ITEMS: 'MyItems',
+  ACCOUNT_SETTINGS: 'AccountSettings',
 })

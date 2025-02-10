@@ -5,6 +5,8 @@ import MaterialIcons from '@expo/vector-icons/MaterialIcons'
 import colors from '../config/color'
 
 import CustomText from './CustomText'
+import CustomImagePicker from './CustomImagePicker'
+
 import { Image } from 'react-native-expo-image-cache'
 
 function ProfileBanner({ user }) {
@@ -15,9 +17,9 @@ function ProfileBanner({ user }) {
   }
   return (
     <View style={styles.container}>
-      {(profile.image && <Image uri={profile.image} />) || (
-        <MaterialIcons name='account-circle' size={60} color={'tomato'} />
-      )}
+      {(profile.image && (
+        <Image uri={profile.image} style={styles.image} />
+      )) || <MaterialIcons name='account-circle' size={60} color={'tomato'} />}
       <View style={styles.nameContainer}>
         <CustomText style={styles.name}>{profile.name}</CustomText>
         <CustomText style={styles.email}>{profile.email}</CustomText>
@@ -40,6 +42,11 @@ const styles = StyleSheet.create({
 
   nameContainer: {
     gap: 5,
+  },
+  image: {
+    width: 60,
+    height: 60,
+    borderRadius: 30,
   },
   name: {
     fontWeight: 700,
