@@ -9,6 +9,7 @@ import {
   SET_FILTER,
   SET_NEW_ITEMS,
   SET_MY_ITEMS,
+  SET_MY_NEW_ITEMS,
 } from '../reducers/item.reducer'
 import { SET_USER } from '../reducers/user.reducer'
 import authStorage from '../../api/user/storage'
@@ -28,17 +29,18 @@ export async function loadItems(filterBy) {
       type: SET_FILTER,
       filterToSet: filterBy,
     })
+    console.log(items)
     if (filterBy.itemsIds && filterBy.itemsIds.length > 0) {
-      console.log(items)
       store.dispatch({
         type: SET_MY_ITEMS,
         items,
       })
+    } else {
+      store.dispatch({
+        type: SET_ITEMS,
+        items,
+      })
     }
-    store.dispatch({
-      type: SET_ITEMS,
-      items,
-    })
     // store.dispatch({ type: SET_ITEM_FILTER, filter: filterBy })
     return items
   } catch (err) {
@@ -66,10 +68,20 @@ export async function getPageItems(filterBy) {
       type: SET_FILTER,
       filterToSet: filterBy,
     })
-    store.dispatch({
-      type: SET_NEW_ITEMS,
-      newItems: items,
-    })
+
+    if (filterBy.itemsIds && filterBy.itemsIds.length > 0) {
+      console.log(items)
+      store.dispatch({
+        type: SET_MY_NEW_ITEMS,
+        newItems: items,
+      })
+    } else {
+      console.log(items)
+      store.dispatch({
+        type: SET_NEW_ITEMS,
+        newItems: items,
+      })
+    }
 
     return items
   } catch (err) {
@@ -107,9 +119,9 @@ export async function addToCart(newItems) {
 
     const user = jwtDecode(token)
 
-    if (!user) return { ok: false }
+    if (!user) return
 
-    const updateRes = await userService.update(
+    const updatedUser = await userService.update(
       {
         ...user,
         items: [...newItems],
@@ -117,14 +129,12 @@ export async function addToCart(newItems) {
       token
     )
 
-    if (!updateRes.ok) return updateRes
+    // store.dispatch({
+    //   type: SET_USER,
+    //   currUser: updatedUser,
+    // })
 
-    store.dispatch({
-      type: SET_USER,
-      currUser: updateRes.data,
-    })
-
-    return updateRes
+    return updatedUser
   } catch (err) {
     throw err
   }

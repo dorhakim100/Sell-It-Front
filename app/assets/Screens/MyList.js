@@ -2,7 +2,12 @@ import { StyleSheet, Text, View } from 'react-native'
 import React, { useEffect, useState, useRef } from 'react'
 import { useSelector } from 'react-redux'
 
-import { removeItem, loadItem, loadItems } from '../store/actions/item.actions'
+import {
+  removeItem,
+  loadItem,
+  loadItems,
+  getPageItems,
+} from '../store/actions/item.actions'
 
 import Screen from './Screen'
 import ItemList from '../cmps/ItemList'
@@ -22,6 +27,8 @@ function MyList({ navigation }) {
   const user = useSelector((stateSelector) => stateSelector.userModule.currUser)
 
   const [isRefreshing, setIsRefreshing] = useState(false)
+
+  const [userFilter, setUserFilter] = useState()
 
   const swipeable = {
     backgroundColor: colors.danger,
@@ -43,31 +50,47 @@ function MyList({ navigation }) {
   }
 
   useEffect(() => {
-    setItems()
+    setUserFilter({
+      ...itemService.getDefaultFilter(),
+      itemsIds: user.items,
+    })
+    // setItems({
+    //     ...itemService.getDefaultFilter(),
+    //     itemsIds: user.items,
+    //   })
   }, [])
+  useEffect(() => {
+    setItems(userFilter)
+  }, [userFilter])
 
-  const setItems = async () => {
+  const setItems = async (filter) => {
     if (!user) return
     console.log(user)
     try {
-      const res = await loadItems({
-        ...itemService.getDefaultFilter(),
-        itemsIds: user.items,
-      })
+      const res = await loadItems(filter)
       if (!res.ok) return
-      const maxPageRes = await itemService.getMaxPage({
-        ...itemService.getDefaultFilter(),
-        itemsIds: user.items,
-      })
+      const maxPageRes = await itemService.getMaxPage(filter)
       if (!maxPageRes.ok) return
       setMaxPage(maxPageRes.data)
     } catch (err) {
       console.log(err)
     }
   }
+
+  const getPageIdxItems = async (pageToSet) => {
+    try {
+      console.log(pageToSet)
+      const filterBy = { ...userFilter, pageIdx: pageToSet }
+      // console.log(filterBy)
+      // setUserFilter(filterBy)
+      return await getPageItems(filterBy)
+    } catch (err) {
+      console.log(err)
+    }
+  }
   return (
     <Screen hasNavigationBar={true}>
-      {(myItems.length === 0 && (
+      {(myItems && myItems.length === 0 && (
         <CustomText style={styles.emptyList}>Add Items first...</CustomText>
       )) || (
         <ItemList
@@ -76,6 +99,8 @@ function MyList({ navigation }) {
           onSwipePress={handleDelete}
           swipeable={swipeable}
           setItem={setItem}
+          getPageIdxItems={getPageIdxItems}
+          extraKey={'myList'}
         />
       )}
     </Screen>

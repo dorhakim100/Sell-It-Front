@@ -21,6 +21,7 @@ function ItemList({
   swipeable,
   getPageIdxItems,
   maxPage,
+  extraKey,
 }) {
   const swipeableRef = useRef(null)
 
@@ -34,16 +35,20 @@ function ItemList({
   }
 
   const loadMoreData = async () => {
-    const pageToSet = filter.pageIdx + 1
-    if (pageToSet === maxPage) return
+    try {
+      const pageToSet = filter.pageIdx + 1
+      if (pageToSet === maxPage) return
 
-    const newItems = await getPageIdxItems(pageToSet)
+      const newItems = await getPageIdxItems(pageToSet)
+    } catch (err) {
+      console.log(err)
+    }
   }
 
   return (
     <FlatList
       data={items}
-      keyExtractor={(item) => item._id.toString()}
+      keyExtractor={(item) => item._id.toString() + extraKey}
       refreshing={isRefreshing}
       onRefresh={() => {
         loadItems(itemService.getDefaultFilter())

@@ -8,6 +8,7 @@ export const ADD_NEW_ITEM = 'ADD_NEW_ITEM'
 export const SET_FILTER = 'SET_FILTER'
 export const SET_NEW_ITEMS = 'SET_NEW_ITEMS'
 export const SET_MY_ITEMS = 'SET_MY_ITEMS'
+export const SET_MY_NEW_ITEMS = 'SET_MY_NEW_ITEMS'
 
 const initialState = {
   items: [],
@@ -30,6 +31,9 @@ export function itemReducer(state = initialState, action) {
       break
     case SET_NEW_ITEMS:
       newState = { ...state, items: [...state.items, ...action.newItems] } // Reset items for first page
+      break
+    case SET_MY_NEW_ITEMS:
+      newState = { ...state, myItems: [...state.myItems, ...action.newItems] } // Reset items for first page
 
       break
     case SET_ITEM:

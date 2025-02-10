@@ -58,7 +58,7 @@ export async function login(credentials) {
 
 export function setRemembered(token) {
   const user = jwtDecode(token) // Decode token to extract user info
-
+  console.log(user)
   store.dispatch({
     type: SET_USER,
     currUser: user,

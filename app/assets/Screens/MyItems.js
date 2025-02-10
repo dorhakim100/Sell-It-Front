@@ -104,6 +104,7 @@ function MyItems({ navigation }) {
           swipeable={swipeable}
           setItem={setItem}
           getPageIdxItems={getPageIdxItems}
+          extraKey={'myItems'}
         />
       )}
     </Screen>

@@ -469,6 +469,7 @@ function ExploreScreen({ navigation }) {
             swipeable={swipeable}
             getPageIdxItems={getPageIdxItems}
             maxPage={maxPage}
+            extraKey={'explore'}
           />
         )}
       </KeyboardAvoidingView>

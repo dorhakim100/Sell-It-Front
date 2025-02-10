@@ -1,4 +1,7 @@
+import { setRemembered } from '../../store/actions/user.actions'
 import client from '../client'
+import authStorage from './storage'
+import { jwtDecode } from 'jwt-decode'
 
 const login = (userCred) => client.post('/auth/login', userCred)
 
@@ -7,12 +10,20 @@ const signup = (userCred) => client.post('/auth/signup', userCred)
 const getUsers = (filter) => client.get('/user', filter)
 const getById = (userId) => client.get(`/user/${userId}`)
 const remove = (userId) => client.remove(`/user/${userId}`)
-const update = (updatedUser, token) =>
-  client.put(`/user/${updatedUser._id}`, updatedUser, {
+const update = async (updatedUser, token) => {
+  const res = await client.put(`/user/${updatedUser._id}`, updatedUser, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   })
+  console.log(res)
+  if (!res.ok) return res
+  await authStorage.storeToken(res.data)
+
+  const user = setRemembered(res.data)
+
+  return user
+}
 
 function getLoggedinUser() {
   return null

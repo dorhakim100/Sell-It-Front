@@ -81,7 +81,7 @@ function DetailsScreen({ navigation }) {
       const newCart = [currItem._id, ...user.items]
       const res = await addToCart(newCart)
 
-      if (!res.ok)
+      if (!res)
         return Alert.alert(
           'Error', // Title of the alert
           'Could not add item to cart', // Message
