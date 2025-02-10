@@ -36,10 +36,14 @@ function MyList({ navigation }) {
   }
 
   const setItem = async (itemId) => {
-    await loadItems(itemService.getDefaultFilter())
-    loadItem(itemId)
+    try {
+      const res = await loadItem(itemId)
+      if (!res.ok) return alert(`Couldn't load item`)
 
-    navigation.navigate(paths.MAIN, { screen: paths.DETAILS })
+      navigation.navigate(paths.DETAILS)
+    } catch (err) {
+      console.log(err)
+    }
   }
 
   const handleDelete = (item, swipeableRef) => {
@@ -88,6 +92,7 @@ function MyList({ navigation }) {
       console.log(err)
     }
   }
+
   return (
     <Screen hasNavigationBar={true}>
       {(myItems && myItems.length === 0 && (
