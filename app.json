@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "MyPokedex",
-    "slug": "MyPokedex",
+    "name": "Sell-It",
+    "slug": "Sell-It",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./app/assets/icon.png",
@@ -27,5 +27,8 @@
     "plugins": [
       "expo-secure-store"
     ]
+  },
+  "notification":{
+    "iosDisplayInForeground":true
   }
 }

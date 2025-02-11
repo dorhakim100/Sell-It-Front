@@ -1,6 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { useSelector } from 'react-redux'
-import { View, StyleSheet } from 'react-native'
+import { View, StyleSheet, Alert } from 'react-native'
+
+import * as Notifications from 'expo-notifications'
+import * as Permissions from 'expo-permissions'
+import expoPushTokenApi from '../api/expoPushTokens.js'
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { createStackNavigator } from '@react-navigation/stack'
@@ -36,11 +40,56 @@ import paths from './routes'
 import { userService } from '../api/user/user'
 import { setRemembered } from '../store/actions/user.actions'
 import MessagesScreen from '../Screens/MessagesScreen'
+import useNotifications from '../services/customHooks/useNotifications.js'
 
 const Tab = createBottomTabNavigator()
 const Stack = createStackNavigator()
 
+Notifications.setNotificationHandler({
+  handleNotification: async () => {
+    console.log('✅ Foreground Notification Handler Executed')
+
+    return {
+      shouldShowAlert: true,
+      shouldPlaySound: true,
+      shouldSetBadge: true,
+    }
+  },
+})
+
 function CustomBottomNavigation() {
+  useNotifications((notification) => console.log(notification))
+  // const [notification, setNotification] = useState(false)
+  // const notificationListener = useRef()
+  // const responseListener = useRef()
+
+  // useEffect(() => {
+  //   registerForPushNotificationsAsync()
+
+  //   Notifications.addNotificationReceivedListener((notification) =>
+  //     console.log(notification)
+  //   )
+  // }, [])
+
+  // async function registerForPushNotificationsAsync() {
+  //   try {
+  //     const { status } = await Notifications.requestPermissionsAsync()
+  //     if (status !== 'granted') {
+  //       console.log('Permission for notifications was denied')
+  //       return
+  //     }
+  //     const projectId = 'ed8d74bf-5210-40b6-84e4-8031fa73f48c'
+
+  //     const token = await Notifications.getExpoPushTokenAsync({
+  //       projectId,
+  //     })
+  //     console.log(token)
+  //     expoPushTokenApi.register(token.data)
+  //   } catch (error) {
+  //     console.error('Error getting notification permissions:', error)
+  //   }
+  // }
+
   return (
     <Tab.Navigator
       initialRouteName={paths.EXPLORE}

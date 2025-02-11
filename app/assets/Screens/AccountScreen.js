@@ -1,6 +1,8 @@
 import { View, Text, FlatList, StyleSheet } from 'react-native'
 import React from 'react'
 
+import * as Notifications from 'expo-notifications'
+
 import Feather from '@expo/vector-icons/Feather'
 import MaterialIcons from '@expo/vector-icons/MaterialIcons'
 import Entypo from '@expo/vector-icons/Entypo'
@@ -29,6 +31,16 @@ export default function AccountScreen({ navigation }) {
   const user = useSelector((stateSelector) => stateSelector.userModule.currUser)
 
   const list = [
+    {
+      text: 'Activate Notification',
+      icon: <AccountIcon />,
+      onPress: () => {
+        Notifications.presentNotificationAsync({
+          title: 'bla',
+          body: 'bla',
+        })
+      },
+    },
     {
       text: 'Account Settings',
       icon: <AccountIcon />,
@@ -116,7 +128,7 @@ export default function AccountScreen({ navigation }) {
 
 const AccountIcon = () => {
   return (
-    <View style={styles.listContainer}>
+    <View style={styles.accountContainer}>
       <MaterialIcons
         style={styles.icon}
         name='account-box'
@@ -187,6 +199,11 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
 
+  accountContainer: {
+    backgroundColor: colors.second,
+    borderRadius: 50,
+    margin: 10,
+  },
   listContainer: {
     backgroundColor: colors.primary,
     borderRadius: 50,
@@ -198,12 +215,12 @@ const styles = StyleSheet.create({
     margin: 10,
   },
   messageContainer: {
-    backgroundColor: colors.second,
+    backgroundColor: colors.gold,
     borderRadius: 50,
     margin: 10,
   },
   logoutContainer: {
-    backgroundColor: colors.gold,
+    backgroundColor: colors.danger,
     borderRadius: 50,
     margin: 10,
   },

@@ -9,6 +9,8 @@ import { PaperProvider } from 'react-native-paper'
 import * as SplashScreen from 'expo-splash-screen'
 import authStorage from './app/assets/api/user/storage.js'
 
+import * as Notifications from 'expo-notifications'
+
 import WelcomeScreen from './app/assets/Screens/WelcomeScreen.js'
 import ExploreScreen from './app/assets/Screens/ExploreScreen.js'
 import DetailsScreen from './app/assets/Screens/DetailsScreen.js'
@@ -36,6 +38,15 @@ SplashScreen.preventAutoHideAsync()
 
 export default function App() {
   const [isReady, setIsReady] = useState(false)
+
+  useEffect(() => {
+    const subscription = Notifications.addNotificationReceivedListener(
+      (notification) => {
+        console.log(notification)
+      }
+    )
+    return () => subscription.remove()
+  }, [])
 
   useEffect(() => {
     const checkRemembered = async () => {
