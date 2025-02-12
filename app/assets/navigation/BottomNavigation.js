@@ -39,7 +39,7 @@ import NewListingButton from './NewListingButton'
 import paths from './routes'
 import { userService } from '../api/user/user'
 import { setRemembered } from '../store/actions/user.actions'
-import MessagesScreen from '../Screens/MessagesScreen'
+import ChatsScreen from '../Screens/ChatsScreen'
 import useNotifications from '../services/customHooks/useNotifications.js'
 
 const Tab = createBottomTabNavigator()
@@ -191,7 +191,7 @@ function CustomBottomNavigation() {
       /> */}
       <Tab.Screen
         name={paths.MESSAGES}
-        component={MessagesScreen}
+        component={ChatsScreen}
         options={{
           tabBarLabel: paths.MESSAGES,
           tabBarButton: (props) => <NewListingButton {...props} />,

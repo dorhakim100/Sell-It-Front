@@ -2,19 +2,28 @@ import client from './client'
 
 import axios from 'axios'
 
-const endpoint = '/message'
+const endpoint = '/chat'
 import { makeId } from '../services/util.service'
 
-const query = (filter) => client.get(endpoint, filter)
+const query = (filter, token) =>
+  client.get(endpoint, filter, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  })
 
-const post = (message) => {
-  return client.post(`${endpoint}`, message)
+const post = (chat, token) => {
+  return client.post(`${endpoint}`, chat, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  })
 }
 
 const getById = (itemId, filter = getDefaultFilter()) =>
   client.get(`${endpoint}/${itemId}`, filter)
 
-export const messageService = {
+export const chatService = {
   query,
   getDefaultFilter,
   post,
@@ -26,7 +35,8 @@ export const messageService = {
 function getDefaultFilter() {
   return {
     txt: '',
-
+    chatsIds: [],
+    loggedInUser: '',
     pageIdx: 0,
   }
 }

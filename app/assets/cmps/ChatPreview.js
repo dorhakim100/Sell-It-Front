@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
 } from 'react-native'
 import { Image } from 'react-native-expo-image-cache'
+import { useSelector } from 'react-redux'
 
 import Swipeable from 'react-native-gesture-handler/Swipeable'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
@@ -21,20 +22,40 @@ import ProfileBanner from './ProfileBanner'
 import defaultStyles from '../config/styles'
 import { itemService } from '../services/item/item.service'
 import CustomButton from './CustomButton'
+import { userService } from '../api/user/user'
 
 const screenWidth = Dimensions.get('window').width
 export default function ChatPreview({ chat }) {
-  return (
-    <TouchableOpacity style={styles.container}>
-      <ProfileBanner
-        user={{
-          ...chat.user,
-          extra: chat.messages[chat.messages.length - 1].content,
-        }}
-        isChat={true}
-      />
-    </TouchableOpacity>
-  )
+  const user = useSelector((stateSelector) => stateSelector.userModule.currUser)
+
+  const [chatter, setChatter] = useState(userService.getEmptyUser())
+
+  console.log(chat)
+
+  useEffect(() => {
+    const loadChatter = () => {
+      if (!user) return
+      const idx = chat.userDetails.findIndex(
+        (userToFind) => userToFind._id === user._id
+      )
+      idx === 1
+        ? setChatter(chat.userDetails[0])
+        : setChatter(chat.userDetails[1])
+    }
+    loadChatter()
+  }, [user])
+  if (user)
+    return (
+      <TouchableOpacity style={styles.container}>
+        <ProfileBanner
+          user={{
+            ...chatter,
+            extra: chat.latestMessage.content,
+          }}
+          isChat={true}
+        />
+      </TouchableOpacity>
+    )
 }
 
 const styles = StyleSheet.create({

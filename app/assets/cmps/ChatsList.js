@@ -16,7 +16,7 @@ import { useSelector } from 'react-redux'
 import ChatPreview from './ChatPreview.js'
 
 export default function ChatsList({ chats, isRefreshing, extraKey }) {
-  console.log(chats)
+  //   console.log(chats)
   return (
     <FlatList
       data={chats}
