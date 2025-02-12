@@ -9,20 +9,36 @@ import CustomImagePicker from './CustomImagePicker'
 
 import { Image } from 'react-native-expo-image-cache'
 
-function ProfileBanner({ user }) {
+function ProfileBanner({ user, isChat }) {
   const profile = {
     name: user.fullname,
-    email: user.email,
+    extra: user.extra,
     image: user.image,
   }
   return (
-    <View style={styles.container}>
+    <View
+      style={{
+        ...styles.container,
+        marginBottom: isChat ? 0 : styles.container.marginBottom,
+      }}
+    >
       {(profile.image && (
         <Image uri={profile.image} style={styles.image} />
       )) || <MaterialIcons name='account-circle' size={60} color={'tomato'} />}
       <View style={styles.nameContainer}>
         <CustomText style={styles.name}>{profile.name}</CustomText>
-        <CustomText style={styles.email}>{profile.email}</CustomText>
+        <CustomText style={styles.extra}>{profile.extra}</CustomText>
+      </View>
+      <View style={styles.timeContainer}>
+        {isChat && (
+          <CustomText>
+            {new Date(Date.now()).toLocaleString('en-US', {
+              hour: '2-digit',
+              minute: '2-digit',
+              hour12: false,
+            })}
+          </CustomText>
+        )}
       </View>
     </View>
   )
@@ -36,12 +52,14 @@ const styles = StyleSheet.create({
     padding: 20,
     // marginTop: 25,
     // marginBottom: 40,
-    marginVertical: 25,
+    marginBottom: 25,
     backgroundColor: colors.strongWhite,
+    justifyContent: 'space-between',
   },
 
   nameContainer: {
     gap: 5,
+    flex: 1,
   },
   image: {
     width: 60,
@@ -52,11 +70,12 @@ const styles = StyleSheet.create({
     fontWeight: 700,
     fontSize: 18,
   },
-  email: {
+  extra: {
     fontWeight: 400,
     fontSize: 16,
     color: colors.subText,
   },
+  timeContainer: {},
 })
 
 export default ProfileBanner

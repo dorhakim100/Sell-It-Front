@@ -75,6 +75,7 @@ export async function signup(credentials) {
       ...credentials,
       image: '',
       items: [],
+      messages: [],
     }
     const res = await userService.signup(userToSave)
     if (!res.ok) return res

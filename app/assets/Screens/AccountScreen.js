@@ -15,6 +15,7 @@ import CustomListSection from '../cmps/CustomListSection'
 import colors from '../config/color'
 import ListItemSeparator from '../cmps/ListItemSeparator'
 import CustomMap from '../cmps/CustomMap'
+import CustomText from '../cmps/CustomText'
 
 import paths from '../navigation/routes'
 import { useSelector } from 'react-redux'
@@ -76,10 +77,11 @@ export default function AccountScreen({ navigation }) {
 
   return (
     <Screen>
+      <CustomText style={styles.header}>Profile</CustomText>
       <ScrollView>
         {(user && (
           <>
-            <ProfileBanner user={user} />
+            <ProfileBanner user={{ ...user, extra: user.email }} />
             <View style={styles.buttonContainer}>
               <CustomButton onPress={() => navigateToScreen(paths.ADD)}>
                 Post
@@ -180,6 +182,12 @@ const LogoutIcon = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+
+  header: {
+    fontSize: 40,
+    fontWeight: 700,
+    padding: 10,
   },
 
   buttonContainer: {

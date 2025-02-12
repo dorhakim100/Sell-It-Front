@@ -40,7 +40,9 @@ function ItemPreview({ item, setItem, renderRightAction, onSwipeableOpen }) {
       <View style={styles.container}>
         {/* <Text style={styles.num}>{getFormattedNum(item.num)}</Text> */}
 
-        <Image uri={item.images[0]} style={styles.image}></Image>
+        {item.images && (
+          <Image uri={item.images[0]} style={styles.image}></Image>
+        )}
 
         <Text style={styles.name} numberOfLines={1}>
           {item.label}
