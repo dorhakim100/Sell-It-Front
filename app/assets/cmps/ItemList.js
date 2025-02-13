@@ -23,9 +23,9 @@ function ItemList({
   maxPage,
   extraKey,
 }) {
-  const swipeableRef = useRef(null)
-
   const filter = useSelector((stateSelector) => stateSelector.itemModule.filter)
+
+  const swipeableRef = useRef(null)
 
   const handleSwipeableOpen = (currentRef) => {
     if (swipeableRef.current) {

@@ -3,7 +3,7 @@ import { store } from '../store'
 import {
   SET_CHATS,
   SET_CHAT,
-  SET_FILTER,
+  SET_CHATS_FILTER,
   SET_NEW_CHATS,
   ADD_CHAT,
   REMOVE_CHAT,
@@ -39,7 +39,7 @@ export async function loadChats(filterBy) {
 
 export function setChatFilter(filterToSet) {
   store.dispatch({
-    type: SET_FILTER,
+    type: SET_CHATS_FILTER,
     filterToSet,
   })
 }

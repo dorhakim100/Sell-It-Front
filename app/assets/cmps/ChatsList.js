@@ -15,8 +15,23 @@ import { useSelector } from 'react-redux'
 
 import ChatPreview from './ChatPreview.js'
 
-export default function ChatsList({ chats, isRefreshing, extraKey }) {
+export default function ChatsList({
+  chats,
+  isRefreshing,
+  extraKey,
+  swipeable,
+}) {
   //   console.log(chats)
+
+  const swipeableRef = useRef(null)
+
+  const handleSwipeableOpen = (currentRef) => {
+    if (swipeableRef.current) {
+      swipeableRef.current.close() // Close the previously open Swipeable if exists
+    }
+    swipeableRef.current = currentRef.current // Set the new Swipeable as the current one
+  }
+
   return (
     <FlatList
       data={chats}
@@ -33,6 +48,7 @@ export default function ChatsList({ chats, isRefreshing, extraKey }) {
             onSwipeableOpen={(ref) => handleSwipeableOpen(ref)}
             chat={item}
             //   items={items}
+
             renderRightAction={() => (
               <ListItemSwipeAction
                 onPress={() => onSwipePress(item, swipeableRef)}

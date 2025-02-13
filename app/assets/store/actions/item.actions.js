@@ -6,7 +6,7 @@ import {
   REMOVE_ITEM,
   ADD_ITEM,
   ADD_NEW_ITEM,
-  SET_FILTER,
+  SET_ITEMS_FILTER,
   SET_NEW_ITEMS,
   SET_MY_ITEMS,
   SET_MY_NEW_ITEMS,
@@ -26,7 +26,7 @@ export async function loadItems(filterBy) {
 
     const items = res.data
     store.dispatch({
-      type: SET_FILTER,
+      type: SET_ITEMS_FILTER,
       filterToSet: filterBy,
     })
     console.log(items)
@@ -41,7 +41,7 @@ export async function loadItems(filterBy) {
         items,
       })
     }
-    // store.dispatch({ type: SET_ITEM_FILTER, filter: filterBy })
+    // store.dispatch({ type: SET_ITEMS_FILTER, filter: filterBy })
     return items
   } catch (err) {
     console.log('Cannot load items', err)
@@ -51,7 +51,7 @@ export async function loadItems(filterBy) {
 
 export function setItemFilter(filterToSet) {
   store.dispatch({
-    type: SET_FILTER,
+    type: SET_ITEMS_FILTER,
     filterToSet,
   })
 }
@@ -65,7 +65,7 @@ export async function getPageItems(filterBy) {
     console.log(items)
     // return
     store.dispatch({
-      type: SET_FILTER,
+      type: SET_ITEMS_FILTER,
       filterToSet: filterBy,
     })
 

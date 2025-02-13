@@ -5,7 +5,7 @@ export const SET_ITEM = 'SET_ITEM'
 export const REMOVE_ITEM = 'REMOVE_ITEM'
 export const ADD_ITEM = 'ADD_ITEM'
 export const ADD_NEW_ITEM = 'ADD_NEW_ITEM'
-export const SET_FILTER = 'SET_FILTER'
+export const SET_ITEMS_FILTER = 'SET_ITEMS_FILTER'
 export const SET_NEW_ITEMS = 'SET_NEW_ITEMS'
 export const SET_MY_ITEMS = 'SET_MY_ITEMS'
 export const SET_MY_NEW_ITEMS = 'SET_MY_NEW_ITEMS'
@@ -71,7 +71,7 @@ export function itemReducer(state = initialState, action) {
 
       break
 
-    case SET_FILTER:
+    case SET_ITEMS_FILTER:
       newState = { ...state, filter: action.filterToSet }
 
       break

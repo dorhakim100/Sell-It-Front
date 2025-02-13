@@ -4,7 +4,7 @@ export const SET_USERS = 'SET_USERS'
 export const SET_USER = 'SET_USER'
 export const REMOVE_USER = 'REMOVE_USER'
 export const ADD_USER = 'ADD_USER'
-export const SET_FILTER = 'SET_FILTER'
+export const SET_USER_FILTER = 'SET_USER_FILTER'
 
 const initialState = {
   users: [],
@@ -43,7 +43,7 @@ export function userReducer(state = initialState, action) {
 
       break
 
-    case SET_FILTER:
+    case SET_USER_FILTER:
       newState = { ...state, filter: action.filterToSet }
 
       break

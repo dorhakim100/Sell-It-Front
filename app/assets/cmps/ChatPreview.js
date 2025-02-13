@@ -8,10 +8,11 @@ import {
   Platform,
   TouchableOpacity,
 } from 'react-native'
+import Swipeable from 'react-native-gesture-handler/Swipeable'
+
 import { Image } from 'react-native-expo-image-cache'
 import { useSelector } from 'react-redux'
 
-import Swipeable from 'react-native-gesture-handler/Swipeable'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 
 import { capitalizeFirstLetter, getFormattedNum } from '../services/utils'
@@ -25,10 +26,15 @@ import CustomButton from './CustomButton'
 import { userService } from '../api/user/user'
 
 const screenWidth = Dimensions.get('window').width
-export default function ChatPreview({ chat }) {
+export default function ChatPreview({
+  chat,
+  onSwipeableOpen,
+  renderRightAction,
+}) {
   const user = useSelector((stateSelector) => stateSelector.userModule.currUser)
 
   const [chatter, setChatter] = useState(userService.getEmptyUser())
+  const itemRef = useRef(null)
 
   console.log(chat)
 
@@ -46,15 +52,21 @@ export default function ChatPreview({ chat }) {
   }, [user])
   if (user)
     return (
-      <TouchableOpacity style={styles.container}>
-        <ProfileBanner
-          user={{
-            ...chatter,
-            extra: chat.latestMessage.content,
-          }}
-          isChat={true}
-        />
-      </TouchableOpacity>
+      <Swipeable
+        renderRightActions={renderRightAction}
+        onSwipeableOpen={() => onSwipeableOpen(itemRef)}
+        ref={itemRef}
+      >
+        <TouchableOpacity style={styles.container}>
+          <ProfileBanner
+            user={{
+              ...chatter,
+              extra: chat.latestMessage.content,
+            }}
+            isChat={true}
+          />
+        </TouchableOpacity>
+      </Swipeable>
     )
 }
 
