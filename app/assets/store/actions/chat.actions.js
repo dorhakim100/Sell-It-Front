@@ -82,12 +82,17 @@ export async function loadChat(chatId) {
   }
 }
 
-export function removeChat(chatId) {
+export async function removeChat(chatId) {
   try {
+    const token = await authStorage.getToken()
+
+    const res = await chatService.remove(chatId, token)
+    if (!res.ok) return res
     store.dispatch({
       type: REMOVE_CHAT,
       chatId,
     })
+    return res //sending the res either way
   } catch (err) {
     throw err
   }

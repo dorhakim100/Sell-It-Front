@@ -19,6 +19,17 @@ const post = (chat, token) => {
     },
   })
 }
+const remove = (chatId, token) => {
+  console.log(chatId)
+  console.log(token)
+
+  return client.remove(`${endpoint}/${chatId}`, {
+    data: {},
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  })
+}
 
 const getById = (itemId, filter = getDefaultFilter()) =>
   client.get(`${endpoint}/${itemId}`, filter)
@@ -30,6 +41,7 @@ export const chatService = {
   getMaxPage,
   getEmptyChat,
   getById,
+  remove,
 }
 
 function getDefaultFilter() {

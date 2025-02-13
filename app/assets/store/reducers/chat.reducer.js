@@ -43,10 +43,14 @@ export function chatReducer(state = initialState, action) {
       const lastRemovedItem = state.chats.find(
         (chatToFind) => chatToFind._id === action.chatId
       )
-      chats = state.myItems.filter(
+      console.log(lastRemovedItem)
+      console.log(state.chats)
+
+      chats = state.chats.filter(
         (chatToFind) => chatToFind._id !== action.chatId
       )
       newState = { ...state, chats: chats, lastRemovedItem }
+
       break
 
     // // case REMOVE_MESSAGE:

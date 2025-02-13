@@ -1,8 +1,12 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { Alert, StyleSheet, Text, View } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 
-import { loadChats, setChatFilter } from '../store/actions/chat.actions'
+import {
+  loadChats,
+  removeChat,
+  setChatFilter,
+} from '../store/actions/chat.actions'
 import { setIsLoading } from '../store/actions/system.actions'
 import { chatService } from '../api/chat'
 
@@ -62,6 +66,37 @@ export default function ChatsScreen() {
     setChats({ ...filter, loggedInUser: user._id })
   }, [user])
 
+  async function deleteChat(chatId) {
+    try {
+      const res = await removeChat(chatId)
+      // if (!res.ok)
+      //   Alert.alert(
+      //     `Couldn't delete chat`, // Title of the alert
+      //     'Do you want to try again?', // Message
+      //     [
+      //       {
+      //         text: 'No', // Button text
+      //         onPress: () => console.log('Cancel Pressed'),
+      //         style: 'cancel', // Optional: styles the button as a cancel button
+      //       },
+      //       // { text: 'Yes', onPress: () => removeChat(imageId) },
+      //     ]
+      //   )
+      // Alert.alert(
+      //   `Chat deleted`, // Title of the alert
+      //   [
+      //     {
+      //       text: 'Ok', // Button text
+      //       onPress: () => console.log('Cancel Pressed'),
+      //       style: 'cancel', // Optional: styles the button as a cancel button
+      //     },
+      //   ]
+      // )
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
   return (
     <Screen>
       <CustomText style={styles.header}>Chats</CustomText>
@@ -70,6 +105,7 @@ export default function ChatsScreen() {
         isRefreshing={isRefreshing}
         extraKey={'chat'}
         swipeable={swipeable}
+        deleteChat={deleteChat}
       />
     </Screen>
   )

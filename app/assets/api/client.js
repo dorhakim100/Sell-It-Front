@@ -15,6 +15,8 @@ const apiClient = create({
 
 const get = apiClient.get
 const put = apiClient.put
+const remove = apiClient.delete
+
 apiClient.get = async (url, params, axiosConfig) => {
   // const token = await authStorage.getToken()
   // if (token) {
@@ -51,6 +53,28 @@ apiClient.put = async (url, params, axiosConfig) => {
 
   const data = await cache.get(url)
   return data ? { ok: true, data } : response
+}
+apiClient.remove = async (url, axiosConfig) => {
+  const token = await authStorage.getToken()
+  console.log(axiosConfig)
+  if (token) {
+    axiosConfig.headers = {
+      ...axiosConfig.headers,
+      Authorization: `Bearer ${token}`,
+    }
+  }
+  console.log(axiosConfig)
+  const response = await remove(url, axiosConfig)
+
+  if (response.ok) {
+    // cache.store(url, response.data)
+    // cache.delete(url)
+
+    return response
+  }
+
+  // const data = await cache.get(url)
+  // return data ? { ok: true, data } : response
 }
 
 export default apiClient

@@ -20,6 +20,7 @@ export default function ChatsList({
   isRefreshing,
   extraKey,
   swipeable,
+  deleteChat,
 }) {
   //   console.log(chats)
 
@@ -30,6 +31,19 @@ export default function ChatsList({
       swipeableRef.current.close() // Close the previously open Swipeable if exists
     }
     swipeableRef.current = currentRef.current // Set the new Swipeable as the current one
+  }
+
+  async function onSwipePress(item, swipeableRef) {
+    try {
+      if (swipeableRef.current) {
+        swipeableRef.current.close()
+      }
+
+      console.log(item)
+      await deleteChat(item._id)
+    } catch (err) {
+      console.log(err)
+    }
   }
 
   return (
