@@ -7,8 +7,8 @@ import ItemPreview from './ItemPreview'
 import ListItemSeparator from './ListItemSeparator'
 import ListItemSwipeAction from './ListItemSwipeAction'
 
-import { loadItems, loadItem } from '../store/actions/item.actions'
-import { itemService } from '../services/item/item.service'
+import { loadChats } from '../store/actions/chat.actions'
+import { chatService } from '../api/chat'
 
 import colors from '../config/color'
 import { useSelector } from 'react-redux'
@@ -47,15 +47,26 @@ export default function ChatsList({
     }
   }
 
+  const loadMoreData = async () => {
+    try {
+      const pageToSet = filter.pageIdx + 1
+      if (pageToSet === maxPage) return
+
+      const newItems = await getPageIdxItems(pageToSet)
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
   return (
     <FlatList
       data={chats}
       keyExtractor={(chat) => chat._id.toString() + extraKey}
       refreshing={isRefreshing}
-      // onRefresh={() => {
-      //   loadChats(itemService.getDefaultFilter())
-      // }}
-      // onEndReached={loadMoreData} // Trigger load more data when end is reached
+      onRefresh={() => {
+        loadChats(chatService.getDefaultFilter())
+      }}
+      onEndReached={loadMoreData} // Trigger load more data when end is reached
       // onEndReachedThreshold={0.5} // Threshold for when to trigger loadMoreData (0 to 1, where 1 is the very end)
       renderItem={({ item }) => {
         return (

@@ -108,8 +108,10 @@ function CustomBottomNavigation() {
               // fontSize: 50,
               // padding: 20,
 
+              // backgroundColor:
+              //   state.index === 1 ? colors.lightGray : colors.softPurple, // Keep default when not active
               backgroundColor:
-                state.index === 1 ? colors.lightGray : colors.softPurple, // Keep default when not active
+                state.index === 1 ? colors.lightGray : colors.lightGray, // Keep default when not active
             }}
             onTabPress={({ route, preventDefault }) => {
               const event = navigation.emit({

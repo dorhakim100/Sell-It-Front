@@ -3,9 +3,9 @@ import { store } from '../store'
 import {
   SET_CHATS,
   SET_CHAT,
-  SET_CHATS_FILTER,
   SET_NEW_CHATS,
   ADD_CHAT,
+  ADD_NEW_MESSAGE,
   REMOVE_CHAT,
   SET_CHAT_FILTER,
 } from '../reducers/chat.reducer'
@@ -31,6 +31,7 @@ export async function loadChats(filterBy) {
       const user = jwtDecode(token)
       filterBy.loggedInUser = user._id
     }
+
     store.dispatch({ type: SET_CHAT_FILTER, filter: filterBy })
     const res = await chatService.query(filterBy)
 
@@ -54,7 +55,7 @@ export async function loadChats(filterBy) {
 
 export function setChatFilter(filterToSet) {
   store.dispatch({
-    type: SET_CHATS_FILTER,
+    type: SET_CHAT_FILTER,
     filterToSet,
   })
 }
@@ -117,22 +118,37 @@ export async function removeChat(chatId) {
   }
 }
 
-// export async function addNewItem(itemToAdd, onProgress) {
-//   try {
-//     // console.log(itemToAdd)
-//     // return
-//     const res = await chatService.post(itemToAdd, onProgress)
-//     if (!res.ok) {
-//       console.log(res)
-//       return res
-//     }
-//     const savedItem = res.data
-//     store.dispatch({
-//       type: ADD_NEW_ITEM,
-//       newItem: savedItem,
-//     })
-//     return savedItem
-//   } catch (err) {
-//     throw err
-//   }
-// }
+export async function addNewMessage(messageToAdd) {
+  try {
+    const users = { from: messageToAdd.from, to: messageToAdd.to }
+
+    const isChatRes = await chatService.checkIsChat(users)
+    if (!isChatRes.ok) return isChatRes
+
+    const token = await authStorage.getToken()
+    if (!token) {
+      return { ok: false }
+    }
+
+    if (!isChatRes.data) {
+    } else {
+      // messageToAdd.isMessage = true
+    }
+    console.log(messageToAdd)
+    const res = await chatService.post(messageToAdd, token)
+    if (!res.ok) {
+      console.log(res)
+      return res
+    }
+    console.log(res)
+    return
+    const savedMessage = res.data
+    store.dispatch({
+      type: ADD_NEW_MESSAGE,
+      newMessage: savedMessage,
+    })
+    return savedMessage
+  } catch (err) {
+    throw err
+  }
+}

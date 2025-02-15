@@ -9,6 +9,7 @@ import { userService } from '../api/user/user'
 
 import defaultStyles from '../config/styles'
 import ProfileBanner from '../cmps/ProfileBanner'
+import { addNewMessage } from '../store/actions/chat.actions'
 
 export default function ChatDetails() {
   const currChat = useSelector(
@@ -54,12 +55,32 @@ export default function ChatDetails() {
       (userToCheck) => userToCheck._id !== user._id
     )
     setOtherUser(otherUser)
+    return otherUser
   }
 
-  const onSend = useCallback((messages = []) => {
+  const onSend = useCallback(async (messages = []) => {
     setMessages((previousMessages) =>
       GiftedChat.append(previousMessages, messages)
     )
+
+    let other
+
+    if (!otherUser._id) {
+      other = getOtherUser()
+    } else {
+      other = otherUser
+    }
+
+    const message = messages[0]
+
+    const messageToSave = {
+      content: message.text,
+      from: message.user._id,
+      to: other._id,
+      sentAt: Date.now(),
+      chatId: currChat._id,
+    }
+    addNewMessage(messageToSave)
   }, [])
 
   return (

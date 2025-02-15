@@ -6,6 +6,7 @@ export const SET_CHAT = 'SET_CHAT'
 export const SET_CHAT_FILTER = 'SET_CHAT_FILTER'
 export const ADD_CHAT = 'ADD_CHAT'
 export const REMOVE_CHAT = 'REMOVE_CHAT'
+export const ADD_NEW_MESSAGE = 'ADD_NEW_MESSAGE'
 
 const initialState = {
   chats: [],

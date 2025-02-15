@@ -17,18 +17,20 @@ const get = apiClient.get
 const put = apiClient.put
 const remove = apiClient.delete
 
-apiClient.get = async (url, params, axiosConfig) => {
+apiClient.get = async (url, params, axiosConfig, isStore = true) => {
   const response = await get(url, params, axiosConfig)
 
   // return response
+  if (isStore) {
+    if (response.ok) {
+      cache.store(url, response.data)
+      return response
+    }
 
-  if (response.ok) {
-    cache.store(url, response.data)
-    return response
+    const data = await cache.get(url)
+    return data ? { ok: true, data } : response
   }
-
-  const data = await cache.get(url)
-  return data ? { ok: true, data } : response
+  return response
 }
 apiClient.put = async (url, params, axiosConfig) => {
   const token = await authStorage.getToken()

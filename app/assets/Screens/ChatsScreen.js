@@ -1,12 +1,14 @@
 import { Alert, StyleSheet, Text, View } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
+import { useIsFocused } from '@react-navigation/native'
 
 import {
   loadChat,
   loadChats,
   removeChat,
   setChatFilter,
+  getPageChats,
 } from '../store/actions/chat.actions'
 import { setIsLoading } from '../store/actions/system.actions'
 import { chatService } from '../api/chat'
@@ -30,6 +32,8 @@ export default function ChatsScreen({ navigation }) {
   const [maxPage, setMaxPage] = useState()
   const filter = useSelector((stateSelector) => stateSelector.chatModule.filter)
 
+  const isFocused = useIsFocused()
+
   const swipeable = {
     backgroundColor: defaultStyles.colors.danger,
     icon: (
@@ -45,10 +49,10 @@ export default function ChatsScreen({ navigation }) {
     try {
       if (!user) return
       setIsLoading(true)
-      // const maxPageRes = await chatService.getMaxPage(filter)
-      // if (!maxPageRes.ok) return
-      // setMaxPage(maxPageRes.data)
-      setMaxPage(1)
+      const maxPageRes = await chatService.getMaxPage(filter)
+      if (!maxPageRes.ok) return
+      setMaxPage(maxPageRes.data)
+
       const res = await loadChats(filter)
 
       setIsLoading(false)
@@ -57,9 +61,9 @@ export default function ChatsScreen({ navigation }) {
     }
   }
   useEffect(() => {
-    console.log(filter)
-    setChats(filter)
-  }, [filter])
+    console.log(isFocused)
+    if (isFocused) setChats({ ...filter, loggedInUser: user._id })
+  }, [filter, isFocused])
   useEffect(() => {
     if (!user) return setChatFilter(chatService.getDefaultFilter())
     setChats({ ...filter, loggedInUser: user._id })
@@ -68,29 +72,29 @@ export default function ChatsScreen({ navigation }) {
   async function deleteChat(chatId) {
     try {
       const res = await removeChat(chatId)
-      // if (!res.ok)
-      //   Alert.alert(
-      //     `Couldn't delete chat`, // Title of the alert
-      //     'Do you want to try again?', // Message
-      //     [
-      //       {
-      //         text: 'No', // Button text
-      //         onPress: () => console.log('Cancel Pressed'),
-      //         style: 'cancel', // Optional: styles the button as a cancel button
-      //       },
-      //       // { text: 'Yes', onPress: () => removeChat(imageId) },
-      //     ]
-      //   )
-      // Alert.alert(
-      //   `Chat deleted`, // Title of the alert
-      //   [
-      //     {
-      //       text: 'Ok', // Button text
-      //       onPress: () => console.log('Cancel Pressed'),
-      //       style: 'cancel', // Optional: styles the button as a cancel button
-      //     },
-      //   ]
-      // )
+      if (!res.ok)
+        Alert.alert(
+          `Couldn't delete chat`, // Title of the alert
+          'Do you want to try again?', // Message
+          [
+            {
+              text: 'No', // Button text
+              onPress: () => console.log('Cancel Pressed'),
+              style: 'cancel', // Optional: styles the button as a cancel button
+            },
+            // { text: 'Yes', onPress: () => removeChat(imageId) },
+          ]
+        )
+      Alert.alert(
+        `Chat deleted`, // Title of the alert
+        [
+          {
+            text: 'Ok', // Button text
+            onPress: () => console.log('Cancel Pressed'),
+            style: 'cancel', // Optional: styles the button as a cancel button
+          },
+        ]
+      )
     } catch (err) {
       console.log(err)
     }
@@ -109,6 +113,15 @@ export default function ChatsScreen({ navigation }) {
     navigation.navigate(routes.CURR_CHAT)
   }
 
+  const getPageIdxItems = async (pageToSet) => {
+    try {
+      const filterBy = { ...filter, pageIdx: pageToSet }
+      return await getPageChats(filterBy)
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
   return (
     <Screen>
       <CustomText style={styles.header}>Chats</CustomText>
@@ -119,6 +132,7 @@ export default function ChatsScreen({ navigation }) {
         swipeable={swipeable}
         deleteChat={deleteChat}
         setChat={setChat}
+        getPageIdxItems={getPageIdxItems}
       />
     </Screen>
   )

@@ -12,12 +12,19 @@ const query = (filter, token) =>
     },
   })
 
-const post = (chat, token) => {
-  return client.post(`${endpoint}`, chat, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  })
+const post = (chatOrMessage, token) => {
+  const { chatId } = chatOrMessage
+
+  return client.post(
+    `${endpoint}${chatId ? `/${chatId}/msg` : ''}`,
+    chatOrMessage,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: {},
+    }
+  )
 }
 const remove = (chatId, token) => {
   console.log(chatId)
@@ -77,11 +84,18 @@ async function getMaxPage(filter) {
 
   return res.data
 }
+async function checkIsChat(users) {
+  const res = client.get(`${endpoint}/isChat`, users, {}, false)
+  if (!res.ok) return res
+
+  return res.data
+}
 export const chatService = {
   query,
   getDefaultFilter,
   post,
   getMaxPage,
+  checkIsChat,
   getEmptyChat,
   getChatById,
   remove,
