@@ -141,13 +141,28 @@ export async function addNewMessage(messageToAdd) {
       return res
     }
     console.log(res)
-    return
     const savedMessage = res.data
+    return savedMessage
     store.dispatch({
       type: ADD_NEW_MESSAGE,
       newMessage: savedMessage,
     })
     return savedMessage
+  } catch (err) {
+    throw err
+  }
+}
+
+export async function removeMessage(messageId, chatId) {
+  try {
+    console.log(chatId)
+    const token = await authStorage.getToken()
+    if (!token) return
+    const res = await chatService.removeMessage({ messageId, chatId }, token)
+    console.log(res)
+    if (!res.ok) return res
+
+    return res //sending the res either way
   } catch (err) {
     throw err
   }

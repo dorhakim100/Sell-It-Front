@@ -27,11 +27,19 @@ const post = (chatOrMessage, token) => {
   )
 }
 const remove = (chatId, token) => {
-  console.log(chatId)
-  console.log(token)
-
   return client.remove(`${endpoint}/${chatId}`, {
     data: {},
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  })
+}
+const removeMessage = (ids, token) => {
+  const { messageId, chatId } = ids
+  console.log(chatId)
+  console.log(messageId)
+  return client.remove(`${endpoint}/message/${messageId}`, {
+    data: { chatId },
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -99,4 +107,5 @@ export const chatService = {
   getEmptyChat,
   getChatById,
   remove,
+  removeMessage,
 }

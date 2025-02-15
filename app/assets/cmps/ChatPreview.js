@@ -67,10 +67,10 @@ export default function ChatPreview({
           <ProfileBanner
             user={{
               ...chatter,
-              extra: chat.latestMessage.content,
+              extra: chat.latestMessage && chat.latestMessage.content,
             }}
             isChat={true}
-            time={chat.latestMessage.sentAt}
+            time={chat.latestMessage && chat.latestMessage.sentAt}
           />
         </TouchableOpacity>
       </Swipeable>
