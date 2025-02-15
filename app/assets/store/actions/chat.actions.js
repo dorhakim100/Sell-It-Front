@@ -7,6 +7,7 @@ import {
   SET_NEW_CHATS,
   ADD_CHAT,
   REMOVE_CHAT,
+  SET_CHAT_FILTER,
 } from '../reducers/chat.reducer'
 
 import authStorage from '../../api/user/storage'
@@ -16,12 +17,27 @@ import { jwtDecode } from 'jwt-decode'
 
 export async function loadChats(filterBy) {
   try {
+    console.log(filterBy)
+    if (!filterBy.loggedInUser) {
+      const token = await authStorage.getToken()
+      if (!token) {
+        store.dispatch({
+          type: SET_CHATS,
+          chats: [],
+        })
+
+        return
+      }
+      const user = jwtDecode(token)
+      filterBy.loggedInUser = user._id
+    }
+    store.dispatch({ type: SET_CHAT_FILTER, filter: filterBy })
     const res = await chatService.query(filterBy)
 
     if (!res.ok) throw res
 
     const chats = res.data
-    setChatFilter(filterBy)
+    // setChatFilter(filterBy)
     console.log(chats)
 
     store.dispatch({
@@ -29,7 +45,6 @@ export async function loadChats(filterBy) {
       chats,
     })
 
-    // store.dispatch({ type: SET_CHAT_FILTER, filter: filterBy })
     return chats
   } catch (err) {
     console.log('Cannot load chats', err)
@@ -68,16 +83,20 @@ export async function getPageChats(filterBy) {
 
 export async function loadChat(chatId) {
   try {
-    const res = await chatService.getById(chatId)
+    const token = await authStorage.getToken()
+    if (!token) return { ok: false }
+    const res = await chatService.getChatById(chatId, token)
+
     if (!res.ok) return res
     const chat = res.data
+    console.log(chat)
     store.dispatch({
       type: SET_CHAT,
       chatToSet: chat,
     })
     return res
   } catch (err) {
-    // console.log('Cannot load chat', err)
+    console.log('Cannot load chat', err)
     throw err
   }
 }

@@ -21,6 +21,7 @@ export default function ChatsList({
   extraKey,
   swipeable,
   deleteChat,
+  setChat,
 }) {
   //   console.log(chats)
 
@@ -62,7 +63,7 @@ export default function ChatsList({
             onSwipeableOpen={(ref) => handleSwipeableOpen(ref)}
             chat={item}
             //   items={items}
-
+            setChat={setChat}
             renderRightAction={() => (
               <ListItemSwipeAction
                 onPress={() => onSwipePress(item, swipeableRef)}

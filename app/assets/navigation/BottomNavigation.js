@@ -41,6 +41,7 @@ import { userService } from '../api/user/user'
 import { setRemembered } from '../store/actions/user.actions'
 import ChatsScreen from '../Screens/ChatsScreen'
 import useNotifications from '../services/customHooks/useNotifications.js'
+import ChatDetails from '../Screens/ChatDetails.js'
 
 const Tab = createBottomTabNavigator()
 const Stack = createStackNavigator()
@@ -316,6 +317,11 @@ export default function AppNavigator() {
         name={paths.ACCOUNT_SETTINGS}
         component={AccountSettings}
         options={{ headerShown: true, headerTitle: 'Account Settings' }}
+      />
+      <Stack.Screen
+        name={paths.CURR_CHAT}
+        component={ChatDetails}
+        options={{ headerShown: true }}
       />
     </Stack.Navigator>
   )

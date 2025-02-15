@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 
 import {
+  loadChat,
   loadChats,
   removeChat,
   setChatFilter,
@@ -17,8 +18,9 @@ import ChatsList from '../cmps/ChatsList.js'
 import CustomText from '../cmps/CustomText'
 
 import defaultStyles from '../config/styles'
+import routes from '../navigation/routes'
 
-export default function ChatsScreen() {
+export default function ChatsScreen({ navigation }) {
   const chats = useSelector((stateSelector) => stateSelector.chatModule.chats)
 
   const [isRefreshing, setIsRefreshing] = useState(false)
@@ -43,16 +45,13 @@ export default function ChatsScreen() {
     try {
       if (!user) return
       setIsLoading(true)
+      // const maxPageRes = await chatService.getMaxPage(filter)
+      // if (!maxPageRes.ok) return
+      // setMaxPage(maxPageRes.data)
+      setMaxPage(1)
       const res = await loadChats(filter)
-      console.log(res)
-      const maxPageRes = await chatService.getMaxPage(filter)
-      setMaxPage(maxPageRes.data)
+
       setIsLoading(false)
-      console.log(res.data)
-      if (res.problem) {
-        setError(true)
-        return
-      }
     } catch (err) {
       console.log(err)
     }
@@ -97,6 +96,19 @@ export default function ChatsScreen() {
     }
   }
 
+  async function setChat(chatId) {
+    try {
+      await loadChat(chatId)
+      navigateToChat()
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  const navigateToChat = () => {
+    navigation.navigate(routes.CURR_CHAT)
+  }
+
   return (
     <Screen>
       <CustomText style={styles.header}>Chats</CustomText>
@@ -106,6 +118,7 @@ export default function ChatsScreen() {
         extraKey={'chat'}
         swipeable={swipeable}
         deleteChat={deleteChat}
+        setChat={setChat}
       />
     </Screen>
   )

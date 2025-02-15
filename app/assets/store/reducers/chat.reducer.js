@@ -3,7 +3,7 @@ import { chatService } from '../../api/chat.js'
 export const SET_CHATS = 'SET_CHATS'
 export const SET_NEW_CHATS = 'SET_NEW_CHATS'
 export const SET_CHAT = 'SET_CHAT'
-export const SET_CHATS_FILTER = 'SET_CHATS_FILTER'
+export const SET_CHAT_FILTER = 'SET_CHAT_FILTER'
 export const ADD_CHAT = 'ADD_CHAT'
 export const REMOVE_CHAT = 'REMOVE_CHAT'
 
@@ -25,7 +25,7 @@ export function chatReducer(state = initialState, action) {
     case SET_CHAT:
       newState = { ...state, currChat: action.chatToSet }
       break
-    case SET_CHATS_FILTER:
+    case SET_CHAT_FILTER:
       newState = { ...state, filter: action.filterToSet }
 
       break

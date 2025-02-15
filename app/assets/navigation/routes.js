@@ -11,4 +11,5 @@ export default Object.freeze({
   MESSAGES: 'Messages',
   MY_ITEMS: 'MyItems',
   ACCOUNT_SETTINGS: 'AccountSettings',
+  CURR_CHAT: 'ChatDetails',
 })

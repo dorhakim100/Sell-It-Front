@@ -4,6 +4,18 @@ import moment from 'moment'
 const prefix = 'cache'
 const expiryInMinutes = 5
 
+// const clearAsyncStorage = async () => {
+//   try {
+//     await AsyncStorage.clear()
+//     console.log('AsyncStorage successfully cleared!')
+//   } catch (error) {
+//     console.error('Error clearing AsyncStorage:', error)
+//   }
+// }
+
+// // Call this function when you want to clear the cache, e.g., on a button press
+// clearAsyncStorage()
+
 const store = async (key, value) => {
   try {
     const item = {
@@ -27,6 +39,8 @@ const get = async (key) => {
     const value = await AsyncStorage.getItem(prefix + key)
     const item = JSON.parse(value)
 
+    // const item = {}
+
     if (!item) return null
 
     if (isExpired(item)) {
@@ -35,6 +49,7 @@ const get = async (key) => {
       return null
     }
 
+    if (typeof item !== 'object') return null
     return item.value
   } catch (error) {
     console.log(error)

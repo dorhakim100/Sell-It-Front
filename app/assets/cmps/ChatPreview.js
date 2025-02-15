@@ -30,6 +30,8 @@ export default function ChatPreview({
   chat,
   onSwipeableOpen,
   renderRightAction,
+  onChatPress,
+  setChat,
 }) {
   const user = useSelector((stateSelector) => stateSelector.userModule.currUser)
 
@@ -50,6 +52,10 @@ export default function ChatPreview({
     }
     loadChatter()
   }, [user])
+
+  const selectChat = () => {
+    setChat(chat._id)
+  }
   if (user)
     return (
       <Swipeable
@@ -57,7 +63,7 @@ export default function ChatPreview({
         onSwipeableOpen={() => onSwipeableOpen(itemRef)}
         ref={itemRef}
       >
-        <TouchableOpacity style={styles.container}>
+        <TouchableOpacity style={styles.container} onPress={selectChat}>
           <ProfileBanner
             user={{
               ...chatter,
