@@ -17,7 +17,11 @@ import { userService } from '../api/user/user'
 
 import defaultStyles from '../config/styles'
 import ProfileBanner from '../cmps/ProfileBanner'
-import { addNewMessage, removeMessage } from '../store/actions/chat.actions'
+import {
+  addNewMessage,
+  removeMessage,
+  setGlobalOtherUser,
+} from '../store/actions/chat.actions'
 
 const screenWidth = Dimensions.get('window').width
 
@@ -65,6 +69,7 @@ export default function ChatDetails() {
       (userToCheck) => userToCheck._id !== user._id
     )
     setOtherUser(otherUser)
+    setGlobalOtherUser(otherUser)
     return otherUser
   }
 
@@ -138,13 +143,6 @@ export default function ChatDetails() {
 
   return (
     <Screen>
-      <ProfileBanner
-        user={{
-          fullname: otherUser.fullname,
-          image: otherUser.image,
-          extra: otherUser.phone,
-        }}
-      />
       <GiftedChat
         messages={messages}
         onSend={(messages) => onSend(messages)}

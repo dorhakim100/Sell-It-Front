@@ -8,6 +8,7 @@ import {
   ADD_NEW_MESSAGE,
   REMOVE_CHAT,
   SET_CHAT_FILTER,
+  SET_OTHER_USER,
 } from '../reducers/chat.reducer'
 
 import authStorage from '../../api/user/storage'
@@ -100,6 +101,13 @@ export async function loadChat(chatId) {
     console.log('Cannot load chat', err)
     throw err
   }
+}
+
+export function setGlobalOtherUser(userToSet) {
+  store.dispatch({
+    type: SET_OTHER_USER,
+    otherUser: userToSet,
+  })
 }
 
 export async function removeChat(chatId) {

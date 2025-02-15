@@ -27,6 +27,8 @@ import AccountScreen from '../Screens/AccountScreen'
 import LoginScreen from '../Screens/LoginScreen'
 import SignupScreen from '../Screens/SignupScreen'
 
+import UserChatHeader from '../cmps/UserChatHeader.js'
+
 import colors from '../config/color'
 import MyList from '../Screens/MyList'
 import MyItems from '../Screens/MyItems'
@@ -288,7 +290,13 @@ export default function AppNavigator() {
   return (
     <Stack.Navigator
       initialRouteName={user ? paths.MAIN : paths.WELCOME} // Set the welcome screen as the initial screen
-      screenOptions={{ headerShown: true, headerTitle: '' }}
+      screenOptions={{
+        headerShown: true,
+        headerTitle: '',
+        headerStyle: {
+          height: 120, // Increase header height as desired
+        },
+      }}
     >
       <Stack.Screen name={paths.WELCOME} component={WelcomeScreen} />
       <Stack.Screen name={paths.LOGIN} component={LoginScreen} />
@@ -323,7 +331,10 @@ export default function AppNavigator() {
       <Stack.Screen
         name={paths.CURR_CHAT}
         component={ChatDetails}
-        options={{ headerShown: true }}
+        options={{
+          headerShown: true,
+          headerTitle: () => <UserChatHeader />,
+        }}
       />
     </Stack.Navigator>
   )

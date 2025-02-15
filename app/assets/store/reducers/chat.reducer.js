@@ -1,4 +1,5 @@
 import { chatService } from '../../api/chat.js'
+import { userService } from '../../api/user/user.js'
 
 export const SET_CHATS = 'SET_CHATS'
 export const SET_NEW_CHATS = 'SET_NEW_CHATS'
@@ -7,11 +8,12 @@ export const SET_CHAT_FILTER = 'SET_CHAT_FILTER'
 export const ADD_CHAT = 'ADD_CHAT'
 export const REMOVE_CHAT = 'REMOVE_CHAT'
 export const ADD_NEW_MESSAGE = 'ADD_NEW_MESSAGE'
+export const SET_OTHER_USER = 'SET_OTHER_USER'
 
 const initialState = {
   chats: [],
   currChat: chatService.getEmptyChat(),
-
+  otherUser: userService.getEmptyUser(),
   filter: chatService.getDefaultFilter(),
 }
 
@@ -44,14 +46,16 @@ export function chatReducer(state = initialState, action) {
       const lastRemovedItem = state.chats.find(
         (chatToFind) => chatToFind._id === action.chatId
       )
-      console.log(lastRemovedItem)
-      console.log(state.chats)
 
       chats = state.chats.filter(
         (chatToFind) => chatToFind._id !== action.chatId
       )
       newState = { ...state, chats: chats, lastRemovedItem }
 
+      break
+
+    case SET_OTHER_USER:
+      newState = { ...state, otherUser: action.otherUser }
       break
 
     // // case REMOVE_MESSAGE:
