@@ -9,11 +9,12 @@ import CustomImagePicker from './CustomImagePicker'
 
 import { Image } from 'react-native-expo-image-cache'
 
-function ProfileBanner({ user, isChat }) {
+function ProfileBanner({ user, isChat, time }) {
   const profile = {
     name: user.fullname,
     extra: user.extra,
     image: user.image,
+    time,
   }
   return (
     <View
@@ -32,7 +33,7 @@ function ProfileBanner({ user, isChat }) {
       <View style={styles.timeContainer}>
         {isChat && (
           <CustomText>
-            {new Date(Date.now()).toLocaleString('en-US', {
+            {new Date(profile.time).toLocaleString('en-US', {
               hour: '2-digit',
               minute: '2-digit',
               hour12: false,
