@@ -137,7 +137,15 @@ function DetailsScreen({ navigation }) {
         <View style={styles.textContainer}>
           <CustomText style={styles.text}>{currItem.description}</CustomText>
         </View>
-        <ProfileBanner user={currItem.userDetails} />
+        <ProfileBanner
+          user={{
+            fullname: currItem.userDetails.fullname,
+            image: currItem.userDetails.image,
+            extra: currItem.userDetails.phone,
+            _id: currItem.userDetails._id,
+          }}
+          isContact={true}
+        />
         <CustomMap cords={cords} isFixed={true} />
       </ScrollView>
     </Screen>

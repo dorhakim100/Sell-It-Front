@@ -13,6 +13,7 @@ import { GiftedChat, Bubble } from 'react-native-gifted-chat'
 import * as Haptics from 'expo-haptics'
 
 import Screen from './Screen'
+import CustomText from '../cmps/CustomText'
 import { userService } from '../api/user/user'
 
 import defaultStyles from '../config/styles'
@@ -42,6 +43,7 @@ export default function ChatDetails() {
   }, [currChat])
 
   const modifyMessages = () => {
+    if (!currChat.messageDetails) return setMessages([])
     const modifiedMessages = currChat.messageDetails.map((message) => {
       const user = currChat.userDetails.find(
         (user) => user._id === message.from
@@ -65,6 +67,7 @@ export default function ChatDetails() {
 
   const getOtherUser = () => {
     if (!user) return
+
     const otherUser = currChat.userDetails.find(
       (userToCheck) => userToCheck._id !== user._id
     )
@@ -160,7 +163,7 @@ export default function ChatDetails() {
         listViewProps={{
           contentContainerStyle: { flexGrow: 1 },
           keyboardShouldPersistTaps: 'always',
-          // inverted: false, // try disabling inversion if it fits your UX
+          inverted: messages.length === 0 ? false : true, // try disabling inversion if it fits your UX
           scrollEnabled: true,
           contentContainerStyle: { flexGrow: 1 },
           keyboardShouldPersistTaps: 'always',
@@ -169,7 +172,7 @@ export default function ChatDetails() {
           <View
             style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
           >
-            <Text>No messages yet</Text>
+            <CustomText>No messages yet</CustomText>
           </View>
         )}
       />

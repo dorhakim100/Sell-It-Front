@@ -161,6 +161,23 @@ export async function addNewMessage(messageToAdd) {
   }
 }
 
+export async function createNewChat(users) {
+  try {
+    const token = await authStorage.getToken()
+    if (!token) return { ok: false }
+    const user = jwtDecode(token)
+
+    if (users.from !== user._id) return
+
+    const res = await chatService.post(users, token)
+    console.log(res)
+    return res
+  } catch (err) {
+    console.log('Cannot load chat', err)
+    throw err
+  }
+}
+
 export async function removeMessage(messageId, chatId) {
   try {
     console.log(chatId)

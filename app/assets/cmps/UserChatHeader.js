@@ -54,6 +54,12 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
 
+  image: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+  },
+
   blankContainer: {
     // backgroundColor: 'tomato',
     width: 40,

@@ -26,6 +26,7 @@ const post = (chatOrMessage, token) => {
     }
   )
 }
+
 const remove = (chatId, token) => {
   return client.remove(`${endpoint}/${chatId}`, {
     data: {},

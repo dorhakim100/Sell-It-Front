@@ -1,21 +1,67 @@
 import { StyleSheet, Text, View } from 'react-native'
+import { Image } from 'react-native-expo-image-cache'
+import { Button } from 'react-native-paper'
+import { useNavigation } from '@react-navigation/native'
+
 import React from 'react'
+import { useSelector } from 'react-redux'
 
 import MaterialIcons from '@expo/vector-icons/MaterialIcons'
+import Feather from '@expo/vector-icons/Feather'
 import colors from '../config/color'
 
 import CustomText from './CustomText'
 import CustomImagePicker from './CustomImagePicker'
+import CustomButton from './CustomButton'
 
-import { Image } from 'react-native-expo-image-cache'
+import defaultStyles from '../config/styles'
+import { chatService } from '../api/chat'
 
-function ProfileBanner({ user, isChat, time }) {
+import routes from '../navigation/routes'
+import { createNewChat, loadChat } from '../store/actions/chat.actions'
+
+function ProfileBanner({ user, isChat, time, isContact }) {
+  const loggedUser = useSelector(
+    (stateSelector) => stateSelector.userModule.currUser
+  )
+
   const profile = {
     name: user.fullname,
     extra: user.extra,
     image: user.image,
     time,
   }
+
+  const navigation = useNavigation()
+
+  async function onStartChat() {
+    if (!loggedUser) {
+      navigation.navigate(routes.LOGIN)
+      return
+    }
+    try {
+      const users = {
+        from: loggedUser._id,
+        to: user._id,
+      }
+
+      const existingChat = await chatService.checkIsChat(users)
+
+      if (existingChat.data) {
+        await loadChat(existingChat.data._id)
+      } else {
+        const res = await createNewChat(users)
+
+        if (!res.ok) return alert(`Couldn't add chat`)
+
+        await loadChat(res.data._id)
+      }
+      navigation.navigate(routes.CURR_CHAT)
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
   return (
     <View
       style={{
@@ -30,8 +76,8 @@ function ProfileBanner({ user, isChat, time }) {
         <CustomText style={styles.name}>{profile.name}</CustomText>
         <CustomText style={styles.extra}>{profile.extra}</CustomText>
       </View>
-      <View style={styles.timeContainer}>
-        {isChat && (
+      <View style={styles.extraContainer}>
+        {isChat && profile.time && (
           <CustomText>
             {new Date(profile.time).toLocaleString('en-US', {
               hour: '2-digit',
@@ -39,6 +85,19 @@ function ProfileBanner({ user, isChat, time }) {
               hour12: false,
             })}
           </CustomText>
+        )}
+        {isContact && (
+          <Button
+            style={styles.button}
+            buttonColor={defaultStyles.colors.primary}
+            textColor={defaultStyles.colors.strongWhite}
+            icon={'send'}
+            mode='contained'
+            contentStyle={{ flexDirection: 'row-reverse' }}
+            onPress={onStartChat}
+          >
+            Contact
+          </Button>
         )}
       </View>
     </View>
@@ -76,7 +135,12 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: colors.subText,
   },
-  timeContainer: {},
+  extraContainer: {},
+
+  button: {
+    alignItems: 'center',
+    gap: 5,
+  },
 })
 
 export default ProfileBanner

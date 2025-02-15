@@ -42,7 +42,7 @@ const ItemContainer = ({ currItem, onPress, addToCart, user }) => {
         {/* <Types types={currItem.types} /> */}
         <CustomButton
           onPress={addToCart}
-          disabled={user.items.includes(currItem._id)}
+          disabled={user && user.items.includes(currItem._id)}
         >
           Add To Cart
         </CustomButton>
