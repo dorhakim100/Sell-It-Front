@@ -2,6 +2,7 @@ import { Alert, StyleSheet, Text, View } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { useIsFocused } from '@react-navigation/native'
+import * as Notifications from 'expo-notifications'
 
 import {
   loadChat,
@@ -12,6 +13,8 @@ import {
 } from '../store/actions/chat.actions'
 import { setIsLoading } from '../store/actions/system.actions'
 import { chatService } from '../api/chat'
+import { socketService } from '../services/socket.service'
+import { SOCKET_EVENT_ADD_MSG } from '../services/socket.service'
 
 import EvilIcons from '@expo/vector-icons/EvilIcons'
 
@@ -56,18 +59,34 @@ export default function ChatsScreen({ navigation }) {
       const res = await loadChats(filter)
 
       setIsLoading(false)
+
+      return res.data
     } catch (err) {
       console.log(err)
     }
   }
   useEffect(() => {
-    console.log(isFocused)
     if (isFocused) setChats({ ...filter, loggedInUser: user._id })
   }, [filter, isFocused])
+
   useEffect(() => {
     if (!user) return setChatFilter(chatService.getDefaultFilter())
     setChats({ ...filter, loggedInUser: user._id })
   }, [user])
+
+  useEffect(() => {
+    if (!user) return
+    socketService.on(SOCKET_EVENT_ADD_MSG, async () => {
+      const res = await loadChats({ ...filter, loggedInUser: user._id })
+      if (!res.ok) return
+      const chats = res.data
+
+      Notifications.presentNotificationAsync({
+        title: 'New Message',
+        body: chats[chats.length - 1].latestMessage.content,
+      })
+    })
+  }, [])
 
   async function deleteChat(chatId) {
     try {

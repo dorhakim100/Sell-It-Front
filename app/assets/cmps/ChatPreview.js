@@ -56,6 +56,7 @@ export default function ChatPreview({
   const selectChat = () => {
     setChat(chat._id)
   }
+
   if (user)
     return (
       <Swipeable
@@ -71,7 +72,11 @@ export default function ChatPreview({
             }}
             isChat={true}
             time={chat.latestMessage && chat.latestMessage.sentAt}
-            isRead={chat.latestMessage.isRead}
+            isRead={
+              user._id === chat.latestMessage.to
+                ? chat.latestMessage.isRead
+                : true
+            }
           />
         </TouchableOpacity>
       </Swipeable>

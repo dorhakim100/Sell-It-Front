@@ -83,7 +83,7 @@ function ProfileBanner({ user, isChat, time, isContact, isRead }) {
             {!isRead && (
               <FontAwesome
                 name='circle'
-                size={24}
+                size={20}
                 color={defaultStyles.colors.primary}
               />
             )}

@@ -38,6 +38,10 @@ import AccountSettings from '../Screens/AccountSettings'
 import defaultStyles from '../config/styles'
 import NewListingButton from './NewListingButton'
 
+import { socketService } from '../services/socket.service.js'
+import { SOCKET_EVENT_ADD_MSG } from '../services/socket.service.js'
+import { loadChats } from '../store/actions/chat.actions.js'
+
 import paths from './routes'
 import { userService } from '../api/user/user'
 import { setRemembered } from '../store/actions/user.actions'
@@ -62,36 +66,8 @@ Notifications.setNotificationHandler({
 
 function CustomBottomNavigation() {
   useNotifications((notification) => console.log(notification))
-  // const [notification, setNotification] = useState(false)
-  // const notificationListener = useRef()
-  // const responseListener = useRef()
 
-  // useEffect(() => {
-  //   registerForPushNotificationsAsync()
-
-  //   Notifications.addNotificationReceivedListener((notification) =>
-  //     console.log(notification)
-  //   )
-  // }, [])
-
-  // async function registerForPushNotificationsAsync() {
-  //   try {
-  //     const { status } = await Notifications.requestPermissionsAsync()
-  //     if (status !== 'granted') {
-  //       console.log('Permission for notifications was denied')
-  //       return
-  //     }
-  //     const projectId = 'ed8d74bf-5210-40b6-84e4-8031fa73f48c'
-
-  //     const token = await Notifications.getExpoPushTokenAsync({
-  //       projectId,
-  //     })
-  //     console.log(token)
-  //     expoPushTokenApi.register(token.data)
-  //   } catch (error) {
-  //     console.error('Error getting notification permissions:', error)
-  //   }
-  // }
+  const user = useSelector((stateSelector) => stateSelector.userModule.currUser)
 
   return (
     <Tab.Navigator

@@ -18,7 +18,6 @@ import { jwtDecode } from 'jwt-decode'
 
 export async function loadChats(filterBy) {
   try {
-    console.log(filterBy)
     if (!filterBy.loggedInUser) {
       const token = await authStorage.getToken()
       if (!token) {
@@ -47,7 +46,7 @@ export async function loadChats(filterBy) {
       chats,
     })
 
-    return chats
+    return res
   } catch (err) {
     console.log('Cannot load chats', err)
     throw err

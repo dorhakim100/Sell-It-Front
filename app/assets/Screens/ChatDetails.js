@@ -20,11 +20,20 @@ import defaultStyles from '../config/styles'
 import ProfileBanner from '../cmps/ProfileBanner'
 import {
   addNewMessage,
+  loadChat,
   removeMessage,
   setGlobalOtherUser,
 } from '../store/actions/chat.actions'
 
+import {
+  SOCKET_EMIT_SEND_MSG,
+  SOCKET_EVENT_ADD_MSG,
+} from '../services/socket.service'
+import { socketService } from '../services/socket.service'
+
 const screenWidth = Dimensions.get('window').width
+
+// const expo = new Expo()
 
 export default function ChatDetails() {
   const currChat = useSelector(
@@ -41,6 +50,14 @@ export default function ChatDetails() {
     modifyMessages()
     getOtherUser()
   }, [currChat])
+
+  useEffect(() => {
+    if (!user) return
+    socketService.on(SOCKET_EVENT_ADD_MSG, async () => {
+      const res = await loadChat(currChat._id)
+      if (!res.ok) return
+    })
+  }, [])
 
   const modifyMessages = () => {
     if (!currChat.messageDetails) return setMessages([])
@@ -87,8 +104,6 @@ export default function ChatDetails() {
 
     const message = messages[0]
 
-    console.log(message)
-
     const messageToSave = {
       content: message.text,
       from: message.user._id,
@@ -97,6 +112,8 @@ export default function ChatDetails() {
       chatId: currChat._id,
     }
     const saved = await addNewMessage(messageToSave)
+    socketService.emit(SOCKET_EMIT_SEND_MSG, saved)
+
     const messageToInsert = {
       text: saved.content,
       user: user,

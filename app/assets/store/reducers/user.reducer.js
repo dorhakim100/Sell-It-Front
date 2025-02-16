@@ -8,7 +8,7 @@ export const SET_USER_FILTER = 'SET_USER_FILTER'
 
 const initialState = {
   users: [],
-  currUser: userService.getLoggedinUser(),
+  currUser: null,
   //   currUser: null,
   myUsers: [],
   //   filter: userService.getDefaultFilter(),
