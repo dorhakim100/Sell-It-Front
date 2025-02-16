@@ -71,6 +71,7 @@ export default function ChatPreview({
             }}
             isChat={true}
             time={chat.latestMessage && chat.latestMessage.sentAt}
+            isRead={chat.latestMessage.isRead}
           />
         </TouchableOpacity>
       </Swipeable>

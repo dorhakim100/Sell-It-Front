@@ -8,6 +8,7 @@ import { useSelector } from 'react-redux'
 
 import MaterialIcons from '@expo/vector-icons/MaterialIcons'
 import Feather from '@expo/vector-icons/Feather'
+import FontAwesome from '@expo/vector-icons/FontAwesome'
 import colors from '../config/color'
 
 import CustomText from './CustomText'
@@ -20,7 +21,7 @@ import { chatService } from '../api/chat'
 import routes from '../navigation/routes'
 import { createNewChat, loadChat } from '../store/actions/chat.actions'
 
-function ProfileBanner({ user, isChat, time, isContact }) {
+function ProfileBanner({ user, isChat, time, isContact, isRead }) {
   const loggedUser = useSelector(
     (stateSelector) => stateSelector.userModule.currUser
   )
@@ -78,13 +79,22 @@ function ProfileBanner({ user, isChat, time, isContact }) {
       </View>
       <View style={styles.extraContainer}>
         {isChat && profile.time && (
-          <CustomText>
-            {new Date(profile.time).toLocaleString('en-US', {
-              hour: '2-digit',
-              minute: '2-digit',
-              hour12: false,
-            })}
-          </CustomText>
+          <View style={styles.messagePropsContainer}>
+            {!isRead && (
+              <FontAwesome
+                name='circle'
+                size={24}
+                color={defaultStyles.colors.primary}
+              />
+            )}
+            <CustomText>
+              {new Date(profile.time).toLocaleString('en-US', {
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: false,
+              })}
+            </CustomText>
+          </View>
         )}
         {isContact && (
           <Button
@@ -136,6 +146,11 @@ const styles = StyleSheet.create({
     color: colors.subText,
   },
   extraContainer: {},
+  messagePropsContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+  },
 
   button: {
     alignItems: 'center',
