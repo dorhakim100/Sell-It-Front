@@ -32,16 +32,16 @@ export default function AccountScreen({ navigation }) {
   const user = useSelector((stateSelector) => stateSelector.userModule.currUser)
 
   const list = [
-    {
-      text: 'Activate Notification',
-      icon: <AccountIcon />,
-      onPress: () => {
-        Notifications.presentNotificationAsync({
-          title: 'bla',
-          body: 'bla',
-        })
-      },
-    },
+    // {
+    //   text: 'Activate Notification',
+    //   icon: <AccountIcon />,
+    //   onPress: () => {
+    //     Notifications.presentNotificationAsync({
+    //       title: 'bla',
+    //       body: 'bla',
+    //     })
+    //   },
+    // },
     {
       text: 'Account Settings',
       icon: <AccountIcon />,

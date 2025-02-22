@@ -3,8 +3,8 @@
     "name": "Sell-It",
     "slug": "Sell-It",
     "version": "1.0.0",
-    "orientation": "portrait",
-    "icon": "./app/assets/icon.png",
+    "orientation": "portrait", 
+    "icon": "./app/assets/imgs/sell-it-logo.png",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "splash": {

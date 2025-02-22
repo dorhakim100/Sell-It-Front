@@ -9,7 +9,7 @@ import ListItemSeparator from './ListItemSeparator'
 import ListItemSwipeAction from './ListItemSwipeAction'
 
 import { loadItems, loadItem } from '../store/actions/item.actions'
-import { itemService } from '../services/item/item.service'
+import { itemService } from '../api/item'
 
 import colors from '../config/color'
 import { useSelector } from 'react-redux'

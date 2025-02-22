@@ -21,7 +21,7 @@ import Categories from './Categories'
 import ProfileBanner from './ProfileBanner'
 
 import defaultStyles from '../config/styles'
-import { itemService } from '../services/item/item.service'
+
 import CustomButton from './CustomButton'
 import { userService } from '../api/user/user'
 

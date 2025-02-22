@@ -18,7 +18,7 @@ import { capitalizeFirstLetter, getFormattedNum } from '../services/utils'
 import Categories from './Categories'
 
 import defaultStyles from '../config/styles'
-import { itemService } from '../services/item/item.service'
+
 import CustomButton from './CustomButton'
 
 const screenWidth = Dimensions.get('window').width

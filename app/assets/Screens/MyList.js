@@ -15,7 +15,7 @@ import ItemList from '../cmps/ItemList'
 import EvilIcons from '@expo/vector-icons/EvilIcons'
 
 import colors from '../config/color'
-import { itemService } from '../services/item/item.service'
+import { itemService } from '../api/item'
 import CustomText from '../cmps/CustomText'
 
 import paths from '../navigation/routes'

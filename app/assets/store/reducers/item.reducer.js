@@ -1,4 +1,4 @@
-import { itemService } from '../../services/item/item.service'
+import { itemService } from '../../api/item'
 
 export const SET_ITEMS = 'SET_ITEMS'
 export const SET_ITEM = 'SET_ITEM'

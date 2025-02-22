@@ -10,6 +10,7 @@ import React, { useState, useCallback, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 
 import { GiftedChat, Bubble } from 'react-native-gifted-chat'
+
 import * as Haptics from 'expo-haptics'
 
 import Screen from './Screen'
