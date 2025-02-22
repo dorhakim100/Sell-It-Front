@@ -24,6 +24,8 @@ import CustomText from '../cmps/CustomText'
 
 import defaultStyles from '../config/styles'
 import routes from '../navigation/routes'
+import loader from '../animation/loader/loader.json'
+import CustomLottieAnimation from '../cmps/CustomLottieAnimation'
 
 export default function ChatsScreen({ navigation }) {
   const chats = useSelector((stateSelector) => stateSelector.chatModule.chats)
@@ -34,6 +36,9 @@ export default function ChatsScreen({ navigation }) {
 
   const [maxPage, setMaxPage] = useState()
   const filter = useSelector((stateSelector) => stateSelector.chatModule.filter)
+  const isLoading = useSelector(
+    (stateSelector) => stateSelector.systemModule.isLoading
+  )
 
   const isFocused = useIsFocused()
 
@@ -91,7 +96,7 @@ export default function ChatsScreen({ navigation }) {
   async function deleteChat(chatId) {
     try {
       const res = await removeChat(chatId)
-      if (!res.ok)
+      if (!res.ok) {
         Alert.alert(
           `Couldn't delete chat`, // Title of the alert
           'Do you want to try again?', // Message
@@ -104,16 +109,8 @@ export default function ChatsScreen({ navigation }) {
             // { text: 'Yes', onPress: () => removeChat(imageId) },
           ]
         )
-      Alert.alert(
-        `Chat deleted`, // Title of the alert
-        [
-          {
-            text: 'Ok', // Button text
-            onPress: () => console.log('Cancel Pressed'),
-            style: 'cancel', // Optional: styles the button as a cancel button
-          },
-        ]
-      )
+        return
+      }
     } catch (err) {
       console.log(err)
     }
@@ -144,15 +141,19 @@ export default function ChatsScreen({ navigation }) {
   return (
     <Screen>
       <CustomText style={styles.header}>Chats</CustomText>
-      <ChatsList
-        chats={chats}
-        isRefreshing={isRefreshing}
-        extraKey={'chat'}
-        swipeable={swipeable}
-        deleteChat={deleteChat}
-        setChat={setChat}
-        getPageIdxItems={getPageIdxItems}
-      />
+      <CustomLottieAnimation animation={loader} visible={isLoading} />
+
+      {!isLoading && (
+        <ChatsList
+          chats={chats}
+          isRefreshing={isRefreshing}
+          extraKey={'chat'}
+          swipeable={swipeable}
+          deleteChat={deleteChat}
+          setChat={setChat}
+          getPageIdxItems={getPageIdxItems}
+        />
+      )}
     </Screen>
   )
 }

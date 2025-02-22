@@ -73,7 +73,7 @@ export default function ChatPreview({
             isChat={true}
             time={chat.latestMessage && chat.latestMessage.sentAt}
             isRead={
-              user._id === chat.latestMessage.to
+              user._id === (chat.latestMessage && chat.latestMessage.to)
                 ? chat.latestMessage.isRead
                 : true
             }

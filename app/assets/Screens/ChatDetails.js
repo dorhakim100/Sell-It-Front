@@ -84,7 +84,8 @@ export default function ChatDetails() {
 
   const getOtherUser = () => {
     if (!user) return
-
+    console.log(currChat)
+    // return
     const otherUser = currChat.userDetails.find(
       (userToCheck) => userToCheck._id !== user._id
     )

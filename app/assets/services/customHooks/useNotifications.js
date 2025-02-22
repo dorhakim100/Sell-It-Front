@@ -15,7 +15,7 @@ Notifications.setNotificationHandler({
 })
 
 // const MY_IP = '192.168.1.237' // home
-const MY_IP = '192.168.200.208' // work
+const MY_IP = '192.168.200.122' // work
 // const MY_IP = 'localhost' // or '127.0.0.1'
 
 const BACKEND_PORT = 3030
