@@ -37,8 +37,7 @@ const remove = (chatId, token) => {
 }
 const removeMessage = (ids, token) => {
   const { messageId, chatId } = ids
-  console.log(chatId)
-  console.log(messageId)
+
   return client.remove(`${endpoint}/message/${messageId}`, {
     data: { chatId },
     headers: {

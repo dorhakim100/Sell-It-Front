@@ -14,7 +14,6 @@ export default function UserChatHeader() {
   const otherUser = useSelector(
     (stateSelector) => stateSelector.chatModule.otherUser
   )
-  console.log(otherUser)
   if (otherUser)
     return (
       <View style={styles.container}>

@@ -38,8 +38,6 @@ export default function ChatPreview({
   const [chatter, setChatter] = useState(userService.getEmptyUser())
   const itemRef = useRef(null)
 
-  console.log(chat)
-
   useEffect(() => {
     const loadChatter = () => {
       if (!user) return
@@ -73,8 +71,10 @@ export default function ChatPreview({
             isChat={true}
             time={chat.latestMessage && chat.latestMessage.sentAt}
             isRead={
-              user._id === (chat.latestMessage && chat.latestMessage.to)
-                ? chat.latestMessage.isRead
+              chat.latestMessage
+                ? user._id === chat.latestMessage.to
+                  ? chat.latestMessage.isRead
+                  : true
                 : true
             }
           />

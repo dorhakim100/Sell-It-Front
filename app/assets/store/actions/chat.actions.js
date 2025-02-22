@@ -39,7 +39,6 @@ export async function loadChats(filterBy) {
 
     const chats = res.data
     // setChatFilter(filterBy)
-    console.log(chats)
 
     store.dispatch({
       type: SET_CHATS,
@@ -66,7 +65,7 @@ export async function getPageChats(filterBy) {
     if (!res.ok) throw res
 
     const chats = res.data
-    console.log(chats)
+
     // return
     setChatFilter(filterBy)
 
@@ -90,7 +89,7 @@ export async function loadChat(chatId) {
 
     if (!res.ok) return res
     const chat = res.data
-    console.log(chat)
+
     store.dispatch({
       type: SET_CHAT,
       chatToSet: chat,
@@ -142,13 +141,12 @@ export async function addNewMessage(messageToAdd) {
     } else {
       // messageToAdd.isMessage = true
     }
-    console.log(messageToAdd)
+
     const res = await chatService.post(messageToAdd, token)
     if (!res.ok) {
-      console.log(res)
       return res
     }
-    console.log(res)
+
     const savedMessage = res.data
     return savedMessage
     store.dispatch({
@@ -170,7 +168,7 @@ export async function createNewChat(users) {
     if (users.from !== user._id) return
 
     const res = await chatService.post(users, token)
-    console.log(res)
+
     return res
   } catch (err) {
     console.log('Cannot load chat', err)
@@ -180,11 +178,10 @@ export async function createNewChat(users) {
 
 export async function removeMessage(messageId, chatId) {
   try {
-    console.log(chatId)
     const token = await authStorage.getToken()
     if (!token) return
     const res = await chatService.removeMessage({ messageId, chatId }, token)
-    console.log(res)
+
     if (!res.ok) return res
 
     return res //sending the res either way

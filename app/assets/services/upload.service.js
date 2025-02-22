@@ -42,8 +42,7 @@ async function uploadImg() {
     }
 
     const formData = new FormData()
-    console.log(pickerResult.assets[0].uri)
-    console.log(pickerResult.assets[0].fileName)
+
     // Create a file object for React Native upload
     const file = {
       uri: fileUri,
@@ -59,7 +58,7 @@ async function uploadImg() {
     try {
       const res = await fetch(UPLOAD_URL, { method: 'POST', body: formData })
       const imgData = await res.json()
-      console.log(imgData)
+
       return imgData.url
     } catch (err) {
       console.error(err)
@@ -69,7 +68,6 @@ async function uploadImg() {
 }
 
 async function getFileSize(uri) {
-  console.log(uri)
   const fileInfo = await FileSystem.getInfoAsync(uri)
   return fileInfo.size
 }

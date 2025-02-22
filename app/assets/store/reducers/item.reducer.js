@@ -22,6 +22,7 @@ export function itemReducer(state = initialState, action) {
   var items
   switch (action.type) {
     case SET_ITEMS:
+      console.log(action.items)
       newState = { ...state, items: action.items } // Reset items for first page
 
       break

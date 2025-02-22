@@ -20,6 +20,7 @@ import { jwtDecode } from 'jwt-decode'
 export async function loadItems(filterBy) {
   try {
     console.log(filterBy)
+
     const res = await itemService.query(filterBy)
 
     if (!res.ok) throw res
@@ -29,7 +30,7 @@ export async function loadItems(filterBy) {
       type: SET_ITEMS_FILTER,
       filterToSet: filterBy,
     })
-    console.log(items)
+
     if (filterBy.itemsIds && filterBy.itemsIds.length > 0) {
       store.dispatch({
         type: SET_MY_ITEMS,
@@ -42,7 +43,7 @@ export async function loadItems(filterBy) {
       })
     }
     // store.dispatch({ type: SET_ITEMS_FILTER, filter: filterBy })
-    return items
+    return res
   } catch (err) {
     console.log('Cannot load items', err)
     throw err
@@ -58,25 +59,22 @@ export function setItemFilter(filterToSet) {
 export async function getPageItems(filterBy) {
   try {
     const res = await itemService.query(filterBy)
-
+    console.log(res)
     if (!res.ok) throw res
 
     const items = res.data
-    console.log(items)
-    // return
+
     store.dispatch({
       type: SET_ITEMS_FILTER,
       filterToSet: filterBy,
     })
-
+    console.log(filterBy)
     if (filterBy.itemsIds && filterBy.itemsIds.length > 0) {
-      console.log(items)
       store.dispatch({
         type: SET_MY_NEW_ITEMS,
         newItems: items,
       })
     } else {
-      console.log(items)
       store.dispatch({
         type: SET_NEW_ITEMS,
         newItems: items,
@@ -159,8 +157,6 @@ export async function navItem(itemIndex) {
 
 export async function addNewItem(itemToAdd, onProgress) {
   try {
-    // console.log(itemToAdd)
-    // return
     const res = await itemService.post(itemToAdd, onProgress)
     if (!res.ok) {
       console.log(res)

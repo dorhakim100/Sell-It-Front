@@ -40,7 +40,7 @@ export async function login(credentials) {
 
     await authStorage.storeToken(token)
     const user = jwtDecode(token) // Decode token to extract user info
-    console.log(user)
+
     // const cart = [...user.items] || []
 
     // store.dispatch({ type: UPDATE_CART, cart: cart })
@@ -58,7 +58,7 @@ export async function login(credentials) {
 
 export function setRemembered(token) {
   const user = jwtDecode(token) // Decode token to extract user info
-  console.log(user)
+
   store.dispatch({
     type: SET_USER,
     currUser: user,
@@ -141,8 +141,7 @@ export async function updateCart(user) {
 export async function updateUser(user) {
   try {
     const token = await authStorage.getToken()
-    console.log(token)
-    console.log(user)
+
     const saved = await userService.update(user, token)
     return saved
   } catch (err) {

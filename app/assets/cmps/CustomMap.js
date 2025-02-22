@@ -7,7 +7,6 @@ import MapView, { Marker } from 'react-native-maps'
 import defaultStyles from '../config/styles'
 
 export default function CustomMap({ cords, isFixed }) {
-  console.log(cords)
   let location
   if (!isFixed) {
     location = useLocation()

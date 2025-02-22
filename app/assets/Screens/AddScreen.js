@@ -274,9 +274,7 @@ export default function AddScreen({ navigation }) {
     }
   }
 
-  useEffect(() => {
-    console.log(percentage)
-  }, [percentage])
+  useEffect(() => {}, [percentage])
 
   function onProgress(per) {
     setPercentage(per)

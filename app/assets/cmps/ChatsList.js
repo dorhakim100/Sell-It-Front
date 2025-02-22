@@ -23,8 +23,6 @@ export default function ChatsList({
   deleteChat,
   setChat,
 }) {
-  //   console.log(chats)
-
   const swipeableRef = useRef(null)
 
   const handleSwipeableOpen = (currentRef) => {
@@ -39,8 +37,6 @@ export default function ChatsList({
       if (swipeableRef.current) {
         swipeableRef.current.close()
       }
-
-      console.log(item)
       await deleteChat(item._id)
     } catch (err) {
       console.log(err)

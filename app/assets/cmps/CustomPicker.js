@@ -44,7 +44,6 @@ export default function CustomPicker({
   // }, [filter.category])
 
   useEffect(() => {
-    console.log(value)
     if (value) setText(value)
   }, [value])
 

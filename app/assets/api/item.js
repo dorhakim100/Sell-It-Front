@@ -53,6 +53,7 @@ function getDefaultFilter() {
     txt: '',
     categories: [],
     pageIdx: 0,
+    soldBy: '',
   }
 }
 

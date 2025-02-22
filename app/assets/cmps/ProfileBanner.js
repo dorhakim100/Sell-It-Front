@@ -47,16 +47,17 @@ function ProfileBanner({ user, isChat, time, isContact, isRead }) {
       }
 
       const existingChat = await chatService.checkIsChat(users)
-
+      let loadingRes
       if (existingChat.data) {
-        await loadChat(existingChat.data._id)
+        loadingRes = await loadChat(existingChat.data._id)
       } else {
         const res = await createNewChat(users)
 
         if (!res.ok) return alert(`Couldn't add chat`)
-
-        await loadChat(res.data._id)
+        const chatId = res.data
+        loadingRes = await loadChat(chatId)
       }
+      if (!loadingRes.ok) return alert(`Couldn't load chat`)
       navigation.navigate(routes.CURR_CHAT)
     } catch (err) {
       console.log(err)

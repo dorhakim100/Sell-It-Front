@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { useFocusEffect } from '@react-navigation/native'
+import { useRoute } from '@react-navigation/native'
 
 import { useSelector } from 'react-redux'
 import {
@@ -54,6 +55,7 @@ import defaultStyles from '../config/styles'
 
 import loader from '../animation/loader/loader.json'
 import { capitalizeWords } from '../services/util.service'
+import routes from '../navigation/routes'
 
 const screenWidth = Dimensions.get('window').width
 const screenHeight = Dimensions.get('window').height
@@ -66,6 +68,9 @@ function ExploreScreen({ navigation }) {
   const [error, setError] = useState(false)
 
   const [filter, setFilter] = useState(itemService.getDefaultFilter())
+  const itemFilter = useSelector(
+    (stateSelector) => stateSelector.itemModule.filter
+  )
   const [maxPage, setMaxPage] = useState()
 
   const [isRefreshing, setIsRefreshing] = useState(false)
@@ -75,6 +80,8 @@ function ExploreScreen({ navigation }) {
   const [isLoading, setIsLoading] = useState(false)
 
   const navigateToAdd = () => navigation.navigate(paths.ADD)
+
+  const route = useRoute()
 
   const swipeable = {
     backgroundColor: colors.addGreen,
@@ -353,13 +360,13 @@ function ExploreScreen({ navigation }) {
   const setItems = async (filter) => {
     try {
       setIsLoading(true)
-      console.log(filter)
+
       const res = await loadItems(filter)
-      console.log(res)
+
       const maxPageRes = await itemService.getMaxPage(filter)
       setMaxPage(maxPageRes.data)
       setIsLoading(false)
-      console.log(res.data)
+
       if (res.problem) {
         setError(true)
         return
@@ -389,8 +396,9 @@ function ExploreScreen({ navigation }) {
     setFilter(filterBy)
   }
 
-  const getPageIdxItems = async (pageToSet) => {
+  async function getPageIdxItems(pageToSet) {
     try {
+      if (itemFilter.soldBy) return
       const filterBy = { ...filter, pageIdx: pageToSet }
       return await getPageItems(filterBy)
     } catch (err) {
@@ -469,7 +477,7 @@ function ExploreScreen({ navigation }) {
             swipeable={swipeable}
             getPageIdxItems={getPageIdxItems}
             maxPage={maxPage}
-            extraKey={'explore'}
+            extraKey={routes.EXPLORE}
           />
         )}
       </KeyboardAvoidingView>

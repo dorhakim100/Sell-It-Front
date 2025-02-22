@@ -15,7 +15,6 @@ export default function UploadScreen({
   visible = false,
   navigate,
 }) {
-  console.log(progress)
   return (
     <Modal visible={visible}>
       <View style={styles.container}>

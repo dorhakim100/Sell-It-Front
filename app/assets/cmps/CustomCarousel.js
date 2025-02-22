@@ -19,7 +19,6 @@ const renderItem = ({ item }) => (
 )
 
 export default function CustomCarousel({ images }) {
-  console.log(images)
   return (
     <View style={styles.carouselContainer}>
       <Carousel

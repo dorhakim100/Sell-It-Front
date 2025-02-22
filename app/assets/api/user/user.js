@@ -16,7 +16,7 @@ const update = async (updatedUser, token) => {
       Authorization: `Bearer ${token}`,
     },
   })
-  console.log(res)
+
   if (!res.ok) return res
   await authStorage.storeToken(res.data)
 

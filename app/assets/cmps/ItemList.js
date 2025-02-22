@@ -1,5 +1,6 @@
 import { StyleSheet, Text, View, FlatList } from 'react-native'
 import React, { useEffect, useRef } from 'react'
+import { useRoute } from '@react-navigation/native'
 
 import Entypo from '@expo/vector-icons/Entypo'
 
@@ -22,6 +23,7 @@ function ItemList({
   getPageIdxItems,
   maxPage,
   extraKey,
+  refreshingFilter,
 }) {
   const filter = useSelector((stateSelector) => stateSelector.itemModule.filter)
 
@@ -33,13 +35,17 @@ function ItemList({
     }
     swipeableRef.current = currentRef.current // Set the new Swipeable as the current one
   }
-
+  const route = useRoute()
   const loadMoreData = async () => {
+    if (extraKey !== route.name) return
     try {
       const pageToSet = filter.pageIdx + 1
-      if (pageToSet === maxPage) return
+      console.log('pageToSet:', pageToSet)
+      console.log('maxPage:', maxPage)
 
-      const newItems = await getPageIdxItems(pageToSet)
+      if (pageToSet !== maxPage) {
+        const newItems = await getPageIdxItems(pageToSet)
+      }
     } catch (err) {
       console.log(err)
     }
@@ -51,9 +57,9 @@ function ItemList({
       keyExtractor={(item) => item._id.toString() + extraKey}
       refreshing={isRefreshing}
       onRefresh={() => {
-        loadItems(itemService.getDefaultFilter())
+        loadItems(refreshingFilter || itemService.getDefaultFilter())
       }}
-      onEndReached={loadMoreData} // Trigger load more data when end is reached
+      onEndReached={async () => await loadMoreData()} // Trigger load more data when end is reached
       // onEndReachedThreshold={0.5} // Threshold for when to trigger loadMoreData (0 to 1, where 1 is the very end)
       renderItem={({ item }) => (
         <ItemPreview

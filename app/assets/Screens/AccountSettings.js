@@ -24,7 +24,6 @@ const validationSchema = Yup.object().shape({
 
 export default function AccountSettings({ navigation }) {
   const user = useSelector((stateSelector) => stateSelector.userModule.currUser)
-  console.log(user)
 
   const [values, setValues] = useState({
     fullname: '',

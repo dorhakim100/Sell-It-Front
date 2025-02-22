@@ -60,6 +60,7 @@ export default function ChatDetails() {
   }, [])
 
   const modifyMessages = () => {
+    if (!currChat) return
     if (!currChat.messageDetails) return setMessages([])
     const modifiedMessages = currChat.messageDetails.map((message) => {
       const user = currChat.userDetails.find(
@@ -84,7 +85,7 @@ export default function ChatDetails() {
 
   const getOtherUser = () => {
     if (!user) return
-    console.log(currChat)
+
     // return
     const otherUser = currChat.userDetails.find(
       (userToCheck) => userToCheck._id !== user._id
@@ -151,14 +152,12 @@ export default function ChatDetails() {
 
   const handleDeleteMessage = async (messageId) => {
     try {
-      console.log(messageId)
-
       const res = await removeMessage(messageId, currChat._id)
       if (!res.ok) alert(`Couldn't delete message`)
 
       setMessages((prev) => prev.filter((message) => message._id !== messageId))
     } catch (err) {
-      console.log()
+      console.log(err)
     }
   }
 

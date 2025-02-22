@@ -19,6 +19,7 @@ import { itemService } from '../services/item/item.service'
 import CustomText from '../cmps/CustomText'
 
 import paths from '../navigation/routes'
+import routes from '../navigation/routes'
 
 function MyList({ navigation }) {
   const myItems = useSelector(
@@ -29,6 +30,7 @@ function MyList({ navigation }) {
   const [isRefreshing, setIsRefreshing] = useState(false)
 
   const [userFilter, setUserFilter] = useState()
+  const [maxPage, setMaxPage] = useState()
 
   const swipeable = {
     backgroundColor: colors.danger,
@@ -58,10 +60,6 @@ function MyList({ navigation }) {
       ...itemService.getDefaultFilter(),
       itemsIds: user.items,
     })
-    // setItems({
-    //     ...itemService.getDefaultFilter(),
-    //     itemsIds: user.items,
-    //   })
   }, [])
   useEffect(() => {
     setItems(userFilter)
@@ -69,7 +67,7 @@ function MyList({ navigation }) {
 
   const setItems = async (filter) => {
     if (!user) return
-    console.log(user)
+
     try {
       const res = await loadItems(filter)
       if (!res.ok) return
@@ -83,10 +81,9 @@ function MyList({ navigation }) {
 
   const getPageIdxItems = async (pageToSet) => {
     try {
-      console.log(pageToSet)
       const filterBy = { ...userFilter, pageIdx: pageToSet }
       // console.log(filterBy)
-      // setUserFilter(filterBy)
+      setUserFilter(filterBy)
       return await getPageItems(filterBy)
     } catch (err) {
       console.log(err)
@@ -105,7 +102,8 @@ function MyList({ navigation }) {
           swipeable={swipeable}
           setItem={setItem}
           getPageIdxItems={getPageIdxItems}
-          extraKey={'myList'}
+          extraKey={routes.LIST}
+          maxPage={maxPage}
         />
       )}
     </Screen>

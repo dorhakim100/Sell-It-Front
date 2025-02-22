@@ -54,14 +54,14 @@ apiClient.put = async (url, params, axiosConfig) => {
 }
 apiClient.remove = async (url, axiosConfig) => {
   const token = await authStorage.getToken()
-  console.log(axiosConfig)
+
   if (token) {
     axiosConfig.headers = {
       ...axiosConfig.headers,
       Authorization: `Bearer ${token}`,
     }
   }
-  console.log(axiosConfig)
+
   const response = await remove(url, axiosConfig)
 
   if (response.ok) {
