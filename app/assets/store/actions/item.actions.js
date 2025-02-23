@@ -10,6 +10,8 @@ import {
   SET_NEW_ITEMS,
   SET_MY_ITEMS,
   SET_MY_NEW_ITEMS,
+  SET_IS_EDIT,
+  UPDATE_ITEM,
 } from '../reducers/item.reducer'
 import { SET_USER } from '../reducers/user.reducer'
 import authStorage from '../../api/user/storage'
@@ -180,6 +182,37 @@ export function removeItem(itemId) {
       itemId,
     })
   } catch (err) {
+    throw err
+  }
+}
+
+export function setIsEdit(stateToSet) {
+  store.dispatch({
+    type: SET_IS_EDIT,
+    isEdit: stateToSet,
+  })
+}
+
+export async function updateItem(itemToUpdate) {
+  try {
+    const itemId = itemToUpdate._id
+
+    const token = await authStorage.getToken()
+    if (!token) return { ok: false }
+    const res = await itemService.update(itemId, itemToUpdate, token)
+
+    if (!res.ok) return res
+    store.dispatch({
+      type: SET_ITEM,
+      itemToSet: res.data,
+    })
+    store.dispatch({
+      type: UPDATE_ITEM,
+      item: res.data,
+    })
+    return res
+  } catch (err) {
+    console.log(err)
     throw err
   }
 }

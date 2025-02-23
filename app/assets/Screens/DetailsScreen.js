@@ -1,4 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useCallback } from 'react'
+import { useFocusEffect } from '@react-navigation/native'
+
 import {
   View,
   SafeAreaView,
@@ -11,7 +13,12 @@ import {
 } from 'react-native'
 
 import { useSelector } from 'react-redux'
-import { addToCart, loadItem, navItem } from '../store/actions/item.actions'
+import {
+  addToCart,
+  loadItem,
+  navItem,
+  setIsEdit,
+} from '../store/actions/item.actions'
 
 import Constants from 'expo-constants'
 
@@ -30,7 +37,7 @@ import paths from '../navigation/routes'
 
 const screenWidth = Dimensions.width
 
-function DetailsScreen({ navigation }) {
+function DetailsScreen({ navigation, route }) {
   const currItem = useSelector(
     (stateSelector) => stateSelector.itemModule.currItem
   )
@@ -41,6 +48,7 @@ function DetailsScreen({ navigation }) {
   const [cords, setCords] = useState()
 
   const user = useSelector((stateSelector) => stateSelector.userModule.currUser)
+  const isEdit = useSelector((stateSelector) => stateSelector.itemModule.isEdit)
 
   useEffect(() => {
     const idx = items.findIndex((item) => item._id === currItem._id)
@@ -55,11 +63,24 @@ function DetailsScreen({ navigation }) {
     })
   }, [currItem])
 
+  useFocusEffect(
+    useCallback(() => {
+      setIsEdit(false)
+      // Optionally return a cleanup function if needed
+      // return () => {
+      // console.log('Screen unfocused')
+      // }
+    }, [])
+  )
+
   const navigateToLogin = () => {
     navigation.navigate(paths.LOGIN)
   }
   const navigateToCart = () => {
     navigation.navigate(paths.LIST)
+  }
+  const navigateToAdd = () => {
+    navigation.navigate(paths.ADD, { previousScreen: paths.DETAILS })
   }
 
   async function onAddToCart() {
@@ -111,28 +132,33 @@ function DetailsScreen({ navigation }) {
       console.log(err)
     }
   }
+  async function editItem() {
+    if (!user)
+      return Alert.alert(
+        'Login', // Title of the alert
+        'To add item, first Login', // Message
+        [
+          {
+            text: 'Cancel', // Button text
+            onPress: () => console.log('Cancel Pressed'),
+            style: 'cancel', // Optional: styles the button as a cancel button
+          },
+          { text: 'OK', onPress: navigateToLogin },
+        ]
+      )
+    setIsEdit(true)
+
+    navigateToAdd()
+  }
 
   return (
     <Screen>
       <ScrollView>
-        {/* <View style={styles.prevNextButtons}>
-        <CustomButton
-          onPress={async () => await navItem(index - 1)}
-          disabled={index === 0}
-        >
-          Previous
-        </CustomButton>
-        <CustomButton
-          onPress={async () => await navItem(index + 1)}
-          disabled={index === items.length - 1}
-        >
-          Next
-        </CustomButton>
-      </View> */}
         <ItemContainer
           currItem={currItem}
           addToCart={onAddToCart}
           user={user}
+          editItem={editItem}
         />
         <View style={styles.textContainer}>
           <CustomText style={styles.text}>{currItem.description}</CustomText>
@@ -144,7 +170,7 @@ function DetailsScreen({ navigation }) {
             extra: currItem.userDetails.phone,
             _id: currItem.userDetails._id,
           }}
-          isContact={true}
+          isContact={currItem.userDetails._id !== user._id ? true : false}
         />
         <CustomMap cords={cords} isFixed={true} />
       </ScrollView>

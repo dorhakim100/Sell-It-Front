@@ -21,7 +21,7 @@ import { makeId } from '../services/utils'
 import { uploadService } from '../services/upload.service'
 import { setIsLoading } from '../store/actions/system.actions'
 
-export default function CustomImagePicker({ input }) {
+export default function CustomImagePicker({ input, initialImages }) {
   const [imagesUri, setImagesUri] = useState([])
 
   const isLoading = useSelector(
@@ -30,6 +30,16 @@ export default function CustomImagePicker({ input }) {
 
   useEffect(() => {
     askPermission()
+  }, [])
+
+  useEffect(() => {
+    if (initialImages) {
+      const modifiedImages = initialImages.map((image) => {
+        return { uri: image, id: makeId() }
+      })
+      setImagesUri(modifiedImages)
+      input.onSetImage(modifiedImages)
+    }
   }, [])
 
   const askPermission = async () => {

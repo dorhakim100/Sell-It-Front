@@ -39,10 +39,19 @@ const post = (itemToAdd, onProgress) => {
 const getById = (itemId, filter = getDefaultFilter()) =>
   client.get(`${endpoint}/${itemId}`, filter)
 
+const update = (itemId, itemToUpdate, token) => {
+  return client.put(`${endpoint}/${itemId}`, itemToUpdate, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  })
+}
+
 export const itemService = {
   query,
   getDefaultFilter,
   post,
+  update,
   getMaxPage,
   getEmptyItem,
   getById,

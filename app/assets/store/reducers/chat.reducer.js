@@ -15,6 +15,7 @@ const initialState = {
   currChat: chatService.getEmptyChat(),
   otherUser: userService.getEmptyUser(),
   filter: chatService.getDefaultFilter(),
+  isEdit: false,
 }
 
 export function chatReducer(state = initialState, action) {
@@ -57,27 +58,6 @@ export function chatReducer(state = initialState, action) {
     case SET_OTHER_USER:
       newState = { ...state, otherUser: action.otherUser }
       break
-
-    // // case REMOVE_MESSAGE:
-    // //   chats = state.chats
-    // //   const { newItem } = action
-
-    // //   newState = {
-    // //     ...state,
-    // //     chats: [newItem, ...chats],
-    // //   }
-
-    // //   break
-    // // case ADD_MESSAGE:
-    // //   chats = state.chats
-    // //   const { newItem } = action
-
-    // //   newState = {
-    // //     ...state,
-    // //     chats: [newItem, ...chats],
-    // //   }
-
-    // //   break
 
     default:
       return newState

@@ -9,6 +9,8 @@ export const SET_ITEMS_FILTER = 'SET_ITEMS_FILTER'
 export const SET_NEW_ITEMS = 'SET_NEW_ITEMS'
 export const SET_MY_ITEMS = 'SET_MY_ITEMS'
 export const SET_MY_NEW_ITEMS = 'SET_MY_NEW_ITEMS'
+export const SET_IS_EDIT = 'SET_IS_EDIT'
+export const UPDATE_ITEM = 'UPDATE_ITEM'
 
 const initialState = {
   items: [],
@@ -71,10 +73,20 @@ export function itemReducer(state = initialState, action) {
       }
 
       break
+    case UPDATE_ITEM:
+      items = state.items.map((item) =>
+        item._id === action.item._id ? action.item : item
+      )
+      newState = { ...state, items }
+      break
 
     case SET_ITEMS_FILTER:
       newState = { ...state, filter: action.filterToSet }
 
+      break
+
+    case SET_IS_EDIT:
+      newState = { ...state, isEdit: action.isEdit }
       break
 
     default:

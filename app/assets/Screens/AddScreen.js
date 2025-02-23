@@ -1,6 +1,7 @@
 import { Alert, StyleSheet, Text, View } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useCallback, useState } from 'react'
 import { useSelector } from 'react-redux'
+import { useFocusEffect } from '@react-navigation/native'
 
 import useLocation from '../services/customHooks/useLocation'
 
@@ -17,7 +18,12 @@ import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons'
 import Foundation from '@expo/vector-icons/Foundation'
 
 import defaultStyles from '../config/styles'
-import { addNewItem, addItem } from '../store/actions/item.actions'
+import {
+  addNewItem,
+  addItem,
+  setIsEdit,
+  updateItem,
+} from '../store/actions/item.actions'
 import { itemService } from '../api/item'
 import Categories from '../cmps/Categories'
 
@@ -31,9 +37,40 @@ const validationSchema = Yup.object().shape({
   categories: Yup.array().required().min(1).label('Categories'),
 })
 
-export default function AddScreen({ navigation }) {
+export default function AddScreen({ navigation, route }) {
   const user = useSelector((stateSelector) => stateSelector.userModule.currUser)
   const location = useLocation()
+
+  const currItem = useSelector(
+    (stateSelector) => stateSelector.itemModule.currItem
+  )
+  console.log(currItem)
+  const isEdit = useSelector((stateSelector) => stateSelector.itemModule.isEdit)
+
+  const [values, setValues] = useState(
+    !isEdit
+      ? {
+          price: '',
+          label: '',
+          images: [],
+          categories: [],
+          description: '',
+        }
+      : {
+          price: currItem.price + '',
+          label: currItem.label,
+          images: currItem.images,
+          categories: currItem.categories,
+          description: currItem.description,
+        }
+  )
+
+  const [uploadVisible, setUploadVisible] = useState(false)
+  const [percentage, setPercentage] = useState(0)
+
+  const handleRegionChange = (category) => {
+    setValues({ ...values, category })
+  }
 
   const inputs = [
     {
@@ -198,21 +235,6 @@ export default function AddScreen({ navigation }) {
     },
   ]
 
-  const [values, setValues] = useState({
-    num: '',
-    label: '',
-    category: '',
-    images: [],
-    categories: [],
-  })
-
-  const [uploadVisible, setUploadVisible] = useState(false)
-  const [percentage, setPercentage] = useState(0)
-
-  const handleRegionChange = (category) => {
-    setValues({ ...values, category })
-  }
-
   async function onSubmit(values) {
     if (!location) return alert('Enable location first')
 
@@ -221,28 +243,14 @@ export default function AddScreen({ navigation }) {
       setUploadVisible(true)
 
       const { price, label, description, images, categories } = values
-      // if (images.length < 3) {
-      //   for (let i = 0; i < 3; i++) {
-      //     if (!images[i]) {
-      //       images[i] = images[0]
-      //     }
-      //   }
-      // }
 
-      // const newSprites = {
-      //   artwork: images[0].uri,
-      //   home: images[1].uri,
-
-      //   pixel: images[2].uri,
-      // }
       const item = itemService.getEmptyItem()
 
       const uris = images.map((image) => image.uri)
 
-      // return
-      await addNewItem(
-        {
-          ...item,
+      if (isEdit) {
+        const updatedItem = {
+          ...currItem,
           price: +price,
           label,
           description,
@@ -250,11 +258,26 @@ export default function AddScreen({ navigation }) {
           images: uris,
           categories,
           location,
-        },
-        onProgress
-      )
+        }
+        await updateItem(updatedItem)
+        mimicProgress()
+        return
+      } else {
+        await addNewItem(
+          {
+            ...item,
+            price: +price,
+            label,
+            description,
+            sellingUser: { id: user._id, fullname: user.fullname },
+            images: uris,
+            categories,
+            location,
+          },
+          onProgress
+        )
+      }
       mimicProgress()
-      // navigateToMain()
     } catch (err) {
       console.log(err)
     }
@@ -264,6 +287,11 @@ export default function AddScreen({ navigation }) {
     setUploadVisible(false)
 
     navigation.replace(paths.MAIN)
+  }
+  const navigateToDetails = () => {
+    setUploadVisible(false)
+
+    navigation.replace(paths.DETAILS)
   }
 
   function mimicProgress() {
@@ -285,14 +313,14 @@ export default function AddScreen({ navigation }) {
       <UploadScreen
         progress={percentage}
         visible={uploadVisible}
-        navigate={navigateToMain}
+        navigate={!isEdit ? navigateToMain : navigateToDetails}
       />
       <CustomFormikForm
         inputs={inputs}
-        button={'Add'}
+        button={!isEdit ? 'Add' : 'Save'}
         validationSchema={validationSchema}
         onSubmit={onSubmit}
-        values={values}
+        initialValues={values}
       />
     </Screen>
   )
